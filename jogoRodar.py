@@ -1,14 +1,14 @@
 import pygame as pg
 from telaInicial import Menu
-from telaInicial import Config
+from configJogo import ConfigJogo
 
 class JogoArena():
     def __init__(self):
         pg.init()
 
         self.tela = pg.display.set_mode((
-            Config.LARGURA_TELA, 
-            Config.ALTURA_TELA
+            ConfigJogo.LARGURA_TELA, 
+            ConfigJogo.ALTURA_TELA
         ))
 
     def rodar(self):

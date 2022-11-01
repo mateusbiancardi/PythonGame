@@ -12,6 +12,9 @@ from jogoRodar import JogoArena
 def main():
     jogo = JogoArena()
     jogo.rodar()
+    
+    while True:
+        pass
 
 if __name__ == "__main__":
     main()

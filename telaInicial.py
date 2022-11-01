@@ -2,15 +2,10 @@ import math
 import random
 import sys
 import pygame as pg
+from configJogo import ConfigJogo
 from time import time
 
-class Config:
-    LARGURA_TELA = 600
-    ALTURA_TELA = 400
-    FONTE_TITULO = 72
-    FONTE_SUBTITULO = 24
-    COR_FUNDO = (0, 0, 255)
-    COR_TITULO = (0, 0, 0)
+
 
 class Cronometro:
     def __init__(self):
@@ -28,12 +23,12 @@ class Menu:
         self.tela = tela 
         self.encerrada = False
 
-        font_titulo = pg.font.SysFont(None, Config.FONTE_TITULO)
-        font_subtitulo = pg.font.SysFont(None, Config.FONTE_SUBTITULO)
+        font_titulo = pg.font.SysFont(None, ConfigJogo.FONTE_TITULO)
+        font_subtitulo = pg.font.SysFont(None, ConfigJogo.FONTE_SUBTITULO)
         self.titulo = font_titulo.render(
-            f'Jogo de Arena', True, Config.COR_TITULO)
+            f'Jogo de Arena', True, ConfigJogo.COR_TITULO)
         self.subtitulo = font_subtitulo.render(
-            f'Pressione espaço para iniciar', True, Config.COR_TITULO)
+            f'Pressione espaço para iniciar', True, ConfigJogo.COR_TITULO)
 
         self.cronometro = Cronometro()
         self.mostrar_subtitulo = True
@@ -65,15 +60,15 @@ class Menu:
         pg.display.flip()
 
     def desenha_titulo(self, tela):
-        px = Config.LARGURA_TELA // 2 - self.titulo.get_size()[0] // 2
-        py = (0.2 * Config.ALTURA_TELA // 2)
+        px = ConfigJogo.LARGURA_TELA // 2 - self.titulo.get_size()[0] // 2
+        py = (0.2 * ConfigJogo.ALTURA_TELA // 2)
         tela.blit(self.titulo, (px, py))
 
     def desenha_subtitulo(self, tela):
         if self.mostrar_subtitulo:
-            px = Config.LARGURA_TELA // 2 - \
+            px = ConfigJogo.LARGURA_TELA // 2 - \
                 self.subtitulo.get_size()[0] // 2
-            py = (0.2 * Config.ALTURA_TELA // 2) + \
+            py = (0.2 * ConfigJogo.ALTURA_TELA // 2) + \
                 (self.titulo.get_size()[1] * 1.5)
             tela.blit(self.subtitulo, (px, py))
 
@@ -82,8 +77,8 @@ class JogoArena:
         pg.init()
 
         self.tela = pg.display.set_mode((
-            Config.LARGURA_TELA, 
-            Config.ALTURA_TELA
+            ConfigJogo.LARGURA_TELA, 
+            ConfigJogo.ALTURA_TELA
         ))
 
     def rodar(self):
