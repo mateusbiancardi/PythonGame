@@ -1,6 +1,6 @@
 class ConfigJogo:
-    LARGURA_TELA = 600
-    ALTURA_TELA = 400
+    LARGURA_TELA = 1200
+    ALTURA_TELA = 800
     COR_ESTADO = (0, 0, 255)
     COR_TITULO = (0, 0, 0)
     ALTURA_PLACAR = 0.1 * ALTURA_TELA
@@ -8,3 +8,4 @@ class ConfigJogo:
     DURACAO_PARTIDA = 60
     FONTE_TITULO = 72
     FONTE_SUBTITULO = 36
+    

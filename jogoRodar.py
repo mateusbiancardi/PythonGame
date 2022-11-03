@@ -1,6 +1,7 @@
 import pygame as pg
 from telaInicial import Menu
 from configJogo import ConfigJogo
+from selecaoPersonagem import telaSelecao
 
 class JogoArena():
     def __init__(self):
@@ -14,3 +15,7 @@ class JogoArena():
     def rodar(self):
         cena = Menu(self.tela)
         cena.rodar()
+
+        while True:
+            selecao = telaSelecao(self.tela)
+            selecao.rodar()
