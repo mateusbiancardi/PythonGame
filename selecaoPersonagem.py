@@ -6,7 +6,11 @@ from configJogo import ConfigJogo
 class telaSelecao:
     def __init__(self, tela):
         self.tela = tela
-        self.encerrada = False
+        
+        #teste
+        self.encerrada = True
+        #teste
+        
 
         self.largura_retangulo = 0.5*ConfigJogo.LARGURA_TELA
         self.altura_retangulo = 0.6*ConfigJogo.ALTURA_TELA
@@ -36,6 +40,7 @@ class telaSelecao:
         while not self.encerrada:
             self.tratamento_eventos()
             self.desenha()
+            
     
     def tratamento_eventos(self):
         events = pg.event.get()

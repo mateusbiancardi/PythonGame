@@ -71,16 +71,3 @@ class Menu:
             py = (0.2 * ConfigJogo.ALTURA_TELA // 2) + \
                 (self.titulo.get_size()[1] * 1.5)
             tela.blit(self.subtitulo, (px, py))
-
-class JogoArena:
-    def __init__(self):
-        pg.init()
-
-        self.tela = pg.display.set_mode((
-            ConfigJogo.LARGURA_TELA, 
-            ConfigJogo.ALTURA_TELA
-        ))
-
-    def rodar(self):
-        cena = Menu(self.tela)
-        cena.rodar()
