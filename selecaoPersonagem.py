@@ -23,9 +23,9 @@ class telaSelecao:
         self.imagerect = self.sprite1_tamanho.get_rect()
         
         self.sprite1_posicao = (self.posicaoX_retangulo+10, self.posicaoY_retangulo+10)
-        self.sprite2_posicao = (self.posicaoX_retangulo+10, self.posicaoY_retangulo+125)
-        self.sprite3_posicao = (self.posicaoX_retangulo+10, self.posicaoY_retangulo+250)
-        self.sprite4_posicao = (self.posicaoX_retangulo+10, self.posicaoY_retangulo+375)
+        self.sprite2_posicao = (self.posicaoX_retangulo+10, self.posicaoY_retangulo+100)
+        self.sprite3_posicao = (self.posicaoX_retangulo+10, self.posicaoY_retangulo+190)
+        self.sprite4_posicao = (self.posicaoX_retangulo+10, self.posicaoY_retangulo+280)
 
         self.persoSelecionado = 1
         self.persoConfirmado = False
@@ -118,7 +118,7 @@ class telaSelecao:
             pg.draw.rect(
                 self.tela, 
                 (0,0,0),
-                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo, self.largura_retangulo, 110),
+                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo, self.largura_retangulo, 90),
                 5
             )
 
@@ -127,7 +127,7 @@ class telaSelecao:
             pg.draw.rect(
                 self.tela, 
                 (0,0,0),
-                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo+125, self.largura_retangulo, 110),
+                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo+90, self.largura_retangulo, 90),
                 5
             )     
 
@@ -136,7 +136,7 @@ class telaSelecao:
             pg.draw.rect(
                 self.tela, 
                 (0,0,0),
-                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo+250, self.largura_retangulo, 110),
+                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo+180, self.largura_retangulo, 90),
                 5
             )
 
@@ -145,7 +145,7 @@ class telaSelecao:
             pg.draw.rect(
                 self.tela, 
                 (0,0,0),
-                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo+375, self.largura_retangulo, 110),
+                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo+270, self.largura_retangulo, 90),
                 5
             )
 

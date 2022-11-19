@@ -1,5 +1,6 @@
 import pygame as pg
 import sys
+import math
 from configJogo import ConfigJogo
 from selecaoPersonagem import telaSelecao
 from personagens import Personagem
@@ -8,6 +9,7 @@ class telaPrincipal():
     def __init__(self, tela, escolhidos):
         self.tela = tela
         self.encerrada = False
+        
         
         p1 = Personagem(escolhidos[0])
         p2 = Personagem(escolhidos[1])
@@ -18,8 +20,11 @@ class telaPrincipal():
         self.p1Velocidade = p1.status[0]
         self.p2Velocidade = p2.status[0]
         
-        #depois que implementar os personagens, fazer todas as mudanças
-        ##self.velocidadePerso = 0.3
+        self.p1Vida = p1.status[1]
+        self.p2Vida = p2.status[1]
+        self.p1VidaTotal = p1.status[1]
+        self.p2VidaTotal = p2.status[1]
+        
         
         self.xP1 = ConfigJogo.LARGURA_TELA * (1/3)
         self.yP1 = ConfigJogo.ALTURA_TELA // 2
@@ -36,8 +41,7 @@ class telaPrincipal():
             self.tela.fill((102, 255, 51))
             self.tratamentoEventos()
             self.movimento()
-            self.personagem1()
-            self.personagem2()
+            self.personagem()
             
             pg.display.flip()
             
@@ -94,21 +98,44 @@ class telaPrincipal():
             sys.exit(0)
     
     def movimento(self):
+        
+        if (self.xP1 + self.v_xP1 < 0) or (self.xP1 + self.v_xP1 > ConfigJogo.LARGURA_TELA-50):
+            self.v_xP1 = 0
+        if (self.yP1 + self.v_yP1 < 0) or (self.yP1 + self.v_yP1 > ConfigJogo.ALTURA_TELA-50):
+            self.v_yP1 = 0
+            
+        if (self.xP2 + self.v_xP2 < 0) or (self.xP2 + self.v_xP2 > ConfigJogo.LARGURA_TELA-50):
+            self.v_xP2 = 0
+        if (self.yP2 + self.v_yP2 < 0) or (self.yP2 + self.v_yP2 > ConfigJogo.ALTURA_TELA-50):
+            self.v_yP2 = 0
+        
         self.xP1 += self.v_xP1
         self.yP1 += self.v_yP1
-        
+            
         self.xP2 += self.v_xP2
         self.yP2 += self.v_yP2
     
-    def personagem1 (self):
+    def personagem (self):
+        
+        font_vida = pg.font.SysFont(None, ConfigJogo.FONTE_VIDA)
+        self.vida1 = font_vida.render(
+            f'{self.p1Vida}/{self.p1VidaTotal}', True, ConfigJogo.COR_VIDA)
+        
+        self.vida2 = font_vida.render(
+            f'{self.p2Vida}/{self.p2VidaTotal}', True, ConfigJogo.COR_VIDA)
+        
+        self.tela.blit(self.vida1, (self.xP1, self.yP1-20))
+        self.tela.blit(self.vida2, (self.xP2, self.yP2-20))
+        
         pg.draw.rect(
                 self.tela, 
                 (0,0,0),
                 pg.Rect(self.xP1, self.yP1, 50, 50)
         )
-    def personagem2 (self):
         pg.draw.rect(
                 self.tela, 
                 (0,0,0),
                 pg.Rect(self.xP2, self.yP2, 50, 50)
         )
+    
+        

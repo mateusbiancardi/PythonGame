@@ -1,6 +1,5 @@
 import pygame as py
 
-#PERSONAGEM DE ATAQUE FÍSICO
 class Personagem:
     def __init__(self, escolhido) :
         self.personagem = escolhido
@@ -9,11 +8,23 @@ class Personagem:
     def stats(self):
         if self.personagem == 1:
             
-            VELOCIDADE = 0.7
+            VELOCIDADE = 0.5
             VIDA = 20
             self.status = (VELOCIDADE, VIDA)
             
         elif self.personagem == 2:
+            
+            VELOCIDADE = 0.3
+            VIDA = 40
+            self.status = (VELOCIDADE, VIDA)
+            
+        elif self.personagem == 3:
+            
+            VELOCIDADE = 0.5
+            VIDA = 20
+            self.status = (VELOCIDADE, VIDA)
+            
+        elif self.personagem == 4:
             
             VELOCIDADE = 0.3
             VIDA = 20
