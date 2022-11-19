@@ -8,7 +8,7 @@ class telaSelecao:
         self.tela = tela
         
         #teste
-        self.encerrada = True
+        self.encerrada = False
         #teste
         
 
@@ -32,14 +32,15 @@ class telaSelecao:
         self.personagem1 = 0
         self.personagem2 = 0
 
-        font_titulo = pg.font.SysFont(None, ConfigJogo.FONTE_TITULO)
-        self.titulo = font_titulo.render(
-            f'Selecione seu personagem', True, ConfigJogo.COR_TITULO)
+        
+        
         
     def rodar(self):
         while not self.encerrada:
             self.tratamento_eventos()
             self.desenha()
+        if self.encerrada:
+            return (self.personagem1, self.personagem2)
             
     
     def tratamento_eventos(self):
@@ -68,11 +69,13 @@ class telaSelecao:
                         self.persoSelecionado -= 1
                 
                 if event.key == pg.K_SPACE:
+                    
                     if self.personagem1 == 0:
-                        self.persoConfirmado == True
-                        
+                        self.personagem1 = self.persoSelecionado
+                    
                     elif self.personagem2 == 0:
-                        self.persoConfirmado == True
+                        self.personagem2 = self.persoSelecionado
+                        self.persoConfirmado = True
 
 
     
@@ -80,12 +83,24 @@ class telaSelecao:
         self.tela.fill((255, 255, 255))
         self.desenha_titulo(self.tela)
         self.desenha_opcao()
-        self.personagemConfirmado()
         self.selecionar_personagem(self.tela)
         
         pg.display.flip()
+        
+        if self.persoConfirmado:
+            self.encerrada = True
 
     def desenha_titulo(self, tela):
+        font_titulo = pg.font.SysFont(None, ConfigJogo.FONTE_TITULO)
+        
+        if self.personagem1 == 0:
+            self.titulo = font_titulo.render(
+                f'Selecione o primeiro personagem', True, ConfigJogo.COR_TITULO)
+        elif self.personagem2 == 0:
+            self.titulo = font_titulo.render(
+                f'Selecione o segundo personagem', True, ConfigJogo.COR_TITULO)
+
+            
         px = ConfigJogo.LARGURA_TELA // 2 - self.titulo.get_size()[0] // 2
         py = (0.2 * ConfigJogo.ALTURA_TELA // 2)
         tela.blit(self.titulo, (px, py))
@@ -100,14 +115,6 @@ class telaSelecao:
 
         if self.persoSelecionado == 1:
 
-            if self.personagem1 == 0:
-                if self.persoConfirmado:
-                    self.personagem1 = self.persoSelecionado
-            
-            elif self.personagem2 == 0:
-                if self.persoConfirmado:
-                    self.personagem2 = self.persoSelecionado
-
             pg.draw.rect(
                 self.tela, 
                 (0,0,0),
@@ -116,14 +123,6 @@ class telaSelecao:
             )
 
         elif self.persoSelecionado == 2:
-            
-            if self.personagem1 == 0:
-                if self.persoConfirmado:
-                    self.personagem1 = self.persoSelecionado
-            
-            elif self.personagem2 == 0:
-                if self.persoConfirmado:
-                    self.personagem2 = self.persoSelecionado
 
             pg.draw.rect(
                 self.tela, 
@@ -134,14 +133,6 @@ class telaSelecao:
 
         elif self.persoSelecionado == 3:
             
-            if self.personagem1 == 0:
-                if self.persoConfirmado:
-                    self.personagem1 = self.persoSelecionado
-            
-            elif self.personagem2 == 0:
-                if self.persoConfirmado:
-                    self.personagem2 = self.persoSelecionado
-
             pg.draw.rect(
                 self.tela, 
                 (0,0,0),
@@ -150,51 +141,10 @@ class telaSelecao:
             )
 
         elif self.persoSelecionado == 4:
-            
-            if self.personagem1 == 0:
-                if self.persoConfirmado:
-                    self.personagem1 = self.persoSelecionado
-            
-            elif self.personagem2 == 0:
-                if self.persoConfirmado:
-                    self.personagem2 = self.persoSelecionado
 
             pg.draw.rect(
                 self.tela, 
                 (0,0,0),
-                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo+375, self.largura_retangulo, 110),
-                5
-            )
-
-    def personagemConfirmado(self):
-        if self.personagem1 == 1:
-            pg.draw.rect(
-                self.tela, 
-                (0, 0, 204),
-                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo, self.largura_retangulo, 110),
-                5
-            )
-
-        elif self.personagem1 == 2:
-            pg.draw.rect(
-                self.tela, 
-                (0,0,204),
-                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo+125, self.largura_retangulo, 110),
-                5
-            )
-
-        elif self.personagem1 == 3:
-            pg.draw.rect(
-                self.tela, 
-                (0,0,204),
-                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo+250, self.largura_retangulo, 110),
-                5
-            )
-
-        elif self.personagem1 == 4:
-            pg.draw.rect(
-                self.tela, 
-                (0,0,204),
                 pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo+375, self.largura_retangulo, 110),
                 5
             )

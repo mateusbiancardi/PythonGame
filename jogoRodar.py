@@ -19,6 +19,6 @@ class JogoArena():
 
         while True:
             selecao = telaSelecao(self.tela)
-            selecao.rodar()
-            telaPrincipalRodando = telaPrincipal(self.tela)
+            personagens = selecao.rodar()
+            telaPrincipalRodando = telaPrincipal(self.tela, personagens)
             telaPrincipalRodando.rodar()
