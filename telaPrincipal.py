@@ -1,6 +1,6 @@
 import pygame as pg
 import sys
-import math
+import os
 from configJogo import ConfigJogo
 from selecaoPersonagem import telaSelecao
 from personagens import Personagem
@@ -25,6 +25,9 @@ class telaPrincipal():
         self.p1VidaTotal = p1.status[1]
         self.p2VidaTotal = p2.status[1]
         
+        self.p1 = p1.status[2]
+        self.p2 = p2.status[2]
+        
         
         self.xP1 = ConfigJogo.LARGURA_TELA * (1/3)
         self.yP1 = ConfigJogo.ALTURA_TELA // 2
@@ -36,9 +39,18 @@ class telaPrincipal():
         self.v_xP2 = 0
         self.v_yP2 = 0
     
+        self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'guerreiro.png'))
+        self.sprite2_tamanho = pg.image.load(os.path.join('sprites', 'mago.png'))
+        self.sprite3_tamanho = pg.image.load(os.path.join('sprites', 'xama.png'))
+        self.sprite4_tamanho = pg.image.load(os.path.join('sprites', 'arqueiro.png'))
+        
+        self.imagerect = self.sprite1_tamanho.get_rect()
+        
+        
     def rodar(self):
         while not self.encerrada:
             self.tela.fill((102, 255, 51))
+            self.carregarPersonagem()
             self.tratamentoEventos()
             self.movimento()
             self.personagem()
@@ -114,6 +126,34 @@ class telaPrincipal():
             
         self.xP2 += self.v_xP2
         self.yP2 += self.v_yP2
+        
+    def carregarPersonagem(self):
+        if self.p1 == 1:
+            self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'guerreiro.png'))
+            
+        elif self.p1 == 2:
+            self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'mago.png'))
+            
+        elif self.p1 == 3:
+            self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'xama.png'))
+            
+        elif self.p1 == 4:
+            self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'arqueiro.png'))
+            
+            
+            
+        if self.p2 == 1:
+            self.sprite2_tamanho = pg.image.load(os.path.join('sprites', 'guerreiro.png'))
+            
+        elif self.p2 == 2:
+            self.sprite2_tamanho = pg.image.load(os.path.join('sprites', 'mago.png'))
+            
+        elif self.p2 == 3:
+            self.sprite2_tamanho = pg.image.load(os.path.join('sprites', 'xama.png'))
+            
+        elif self.p2 == 4:
+            self.sprite2_tamanho = pg.image.load(os.path.join('sprites', 'arqueiro.png'))
+            
     
     def personagem (self):
         
@@ -127,15 +167,5 @@ class telaPrincipal():
         self.tela.blit(self.vida1, (self.xP1, self.yP1-20))
         self.tela.blit(self.vida2, (self.xP2, self.yP2-20))
         
-        pg.draw.rect(
-                self.tela, 
-                (0,0,0),
-                pg.Rect(self.xP1, self.yP1, 50, 50)
-        )
-        pg.draw.rect(
-                self.tela, 
-                (0,0,0),
-                pg.Rect(self.xP2, self.yP2, 50, 50)
-        )
-    
-        
+        self.tela.blit(self.sprite1_tamanho, (self.xP1, self.yP1))
+        self.tela.blit(self.sprite2_tamanho, (self.xP2, self.yP2)) 

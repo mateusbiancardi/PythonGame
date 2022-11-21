@@ -6,26 +6,39 @@ class Personagem:
     
     #área para acertar o boneco
     def stats(self):
+        
+        #guerreiro
         if self.personagem == 1:
+            
+            VELOCIDADE = 0.4
+            VIDA = 40
+            VELOCIDADE_ATQ = 2
+            DANO = 5
+            self.status = (VELOCIDADE, VIDA, 1)
+          
+        #mago  
+        elif self.personagem == 2:
             
             VELOCIDADE = 0.5
             VIDA = 20
-            self.status = (VELOCIDADE, VIDA)
-            
-        elif self.personagem == 2:
-            
-            VELOCIDADE = 0.3
-            VIDA = 40
-            self.status = (VELOCIDADE, VIDA)
-            
+            VELOCIDADE_ATQ = 2
+            DANO = 4
+            self.status = (VELOCIDADE, VIDA, 2)
+          
+        #xamã  
         elif self.personagem == 3:
             
             VELOCIDADE = 0.5
-            VIDA = 20
-            self.status = (VELOCIDADE, VIDA)
-            
+            VIDA = 30
+            VELOCIDADE_ATQ = 4
+            DANO = 5
+            self.status = (VELOCIDADE, VIDA, 3)
+          
+        #arqueiro  
         elif self.personagem == 4:
             
-            VELOCIDADE = 0.3
-            VIDA = 20
-            self.status = (VELOCIDADE, VIDA)
+            VELOCIDADE = 0.5
+            VIDA = 25
+            VELOCIDADE_ATQ = 1
+            DANO = 3
+            self.status = (VELOCIDADE, VIDA, 4)

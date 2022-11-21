@@ -19,7 +19,11 @@ class telaSelecao:
         self.posicaoY_retangulo = (ConfigJogo.ALTURA_TELA * 0.25)
         self.cor_retangulo = (121, 126, 133)
 
-        self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'Guerreiro.png'))
+        self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'guerreiro.png'))
+        self.sprite2_tamanho = pg.image.load(os.path.join('sprites', 'mago.png'))
+        self.sprite3_tamanho = pg.image.load(os.path.join('sprites', 'xama.png'))
+        self.sprite4_tamanho = pg.image.load(os.path.join('sprites', 'arqueiro.png'))
+        
         self.imagerect = self.sprite1_tamanho.get_rect()
         
         self.sprite1_posicao = (self.posicaoX_retangulo+10, self.posicaoY_retangulo+10)
@@ -31,9 +35,7 @@ class telaSelecao:
         self.persoConfirmado = False
         self.personagem1 = 0
         self.personagem2 = 0
-
-        
-        
+ 
         
     def rodar(self):
         while not self.encerrada:
@@ -109,9 +111,9 @@ class telaSelecao:
     def selecionar_personagem(self,tela):
         
         tela.blit(self.sprite1_tamanho, self.sprite1_posicao)
-        tela.blit(self.sprite1_tamanho, self.sprite2_posicao)
-        tela.blit(self.sprite1_tamanho, self.sprite3_posicao)
-        tela.blit(self.sprite1_tamanho, self.sprite4_posicao)
+        tela.blit(self.sprite2_tamanho, self.sprite2_posicao)
+        tela.blit(self.sprite3_tamanho, self.sprite3_posicao)
+        tela.blit(self.sprite4_tamanho, self.sprite4_posicao)
 
         if self.persoSelecionado == 1:
 
