@@ -6,10 +6,7 @@ from configJogo import ConfigJogo
 class telaSelecao:
     def __init__(self, tela):
         self.tela = tela
-        
-        #teste
         self.encerrada = False
-        #teste
         
 
         self.largura_retangulo = 0.5*ConfigJogo.LARGURA_TELA

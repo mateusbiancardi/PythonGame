@@ -1,8 +1,9 @@
-import pygame as py
+import pygame as pg
 
 class Personagem:
-    def __init__(self, escolhido) :
+    def __init__(self, escolhido, tela) :
         self.personagem = escolhido
+        self.tela = tela
     
     #área para acertar o boneco
     def stats(self):
@@ -14,7 +15,7 @@ class Personagem:
             VIDA = 40
             VELOCIDADE_ATQ = 2
             DANO = 5
-            self.status = (VELOCIDADE, VIDA, 1)
+            self.status = (VELOCIDADE, VIDA, 1, VELOCIDADE_ATQ, DANO)
           
         #mago  
         elif self.personagem == 2:
@@ -23,7 +24,7 @@ class Personagem:
             VIDA = 20
             VELOCIDADE_ATQ = 2
             DANO = 4
-            self.status = (VELOCIDADE, VIDA, 2)
+            self.status = (VELOCIDADE, VIDA, 2, VELOCIDADE_ATQ, DANO)
           
         #xamã  
         elif self.personagem == 3:
@@ -32,7 +33,7 @@ class Personagem:
             VIDA = 30
             VELOCIDADE_ATQ = 4
             DANO = 5
-            self.status = (VELOCIDADE, VIDA, 3)
+            self.status = (VELOCIDADE, VIDA, 3, VELOCIDADE_ATQ, DANO)
           
         #arqueiro  
         elif self.personagem == 4:
@@ -41,4 +42,4 @@ class Personagem:
             VIDA = 25
             VELOCIDADE_ATQ = 1
             DANO = 3
-            self.status = (VELOCIDADE, VIDA, 4)
+            self.status = (VELOCIDADE, VIDA, 4, VELOCIDADE_ATQ, DANO)

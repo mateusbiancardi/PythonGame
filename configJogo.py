@@ -10,4 +10,3 @@ class ConfigJogo:
     FONTE_TITULO = 72
     FONTE_SUBTITULO = 36
     FONTE_VIDA = 25
-    
