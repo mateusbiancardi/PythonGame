@@ -4,26 +4,35 @@ import os
 from configJogo import ConfigJogo
 from selecaoPersonagem import telaSelecao
 from personagens import Personagem
+from cooldownCast import CooldownCast
+from time import time
 
 class telaPrincipal():
     def __init__(self, tela, escolhidos):
         self.tela = tela
         self.encerrada = False
-        
+        self.primeiroCastE = True
+        self.primeiroCastM = True
         
         p1 = Personagem(escolhidos[0], self.tela)
         p2 = Personagem(escolhidos[1], self.tela)
+        
+        self.CastE = CooldownCast()
+        self.CastM = CooldownCast()
         
         p1.stats()
         p2.stats()
         
         self.p1AtaqueE = False
+        self.p2AtaqueM = False
         
         self.p1Velocidade = p1.status[0]
         self.p2Velocidade = p2.status[0]
         
         self.p1Vida = p1.status[1]
         self.p2Vida = p2.status[1]
+        self.p1VidaAntes = p1.status[1]
+        self.p2VidaAntes = p2.status[1]
         self.p1VidaTotal = p1.status[1]
         self.p2VidaTotal = p2.status[1]
         
@@ -54,7 +63,6 @@ class telaPrincipal():
         
         self.imagerect = self.sprite1_tamanho.get_rect()
         
-        
         self.raioATQGiratorio = 50
         
         
@@ -74,7 +82,7 @@ class telaPrincipal():
             
         for event in events:
             #Personagem 1 (W A S D)
-            
+            #Movimentação
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_a)) or (pg.key.get_pressed()[pg.K_a]):
                 self.v_xP1 = -self.p1Velocidade
 
@@ -91,18 +99,23 @@ class telaPrincipal():
                         ((event.type == pg.KEYUP) and (event.key == pg.K_d)):
                 self.v_xP1 = 0
                 
-            
-                
             if ((event.type == pg.KEYUP) and (event.key == pg.K_w)) or \
                         ((event.type == pg.KEYUP) and (event.key == pg.K_s)):
                 self.v_yP1 = 0
-                
-                
+                   
+            #Ataque E
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_e)) or (pg.key.get_pressed()[pg.K_e]):
-                self.p1AtaqueE = True
+                cooldownCastE = self.CastE.diferenca()
                 
+                if (cooldownCastE > self.p1VelocidadeAtq) or self.primeiroCastE:
+                    self.p1AtaqueE = True
+                    self.CastE.resetar()
+                    self.duracaoCastE = time()
+                    self.primeiroCastE = False
+                    
             
             #Personagem 2 (setinhas)
+            #Movimentação
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_LEFT)) or (pg.key.get_pressed()[pg.K_LEFT]):
                 self.v_xP2 = -self.p2Velocidade
 
@@ -122,6 +135,17 @@ class telaPrincipal():
             if ((event.type == pg.KEYUP) and (event.key == pg.K_UP)) or \
                         ((event.type == pg.KEYUP) and (event.key == pg.K_DOWN)):
                 self.v_yP2 = 0
+                
+                
+            #Ataque M
+            if ((event.type == pg.KEYDOWN) and (event.key == pg.K_m)) or (pg.key.get_pressed()[pg.K_m]):
+                cooldownCastM = self.CastM.diferenca()
+                
+                if (cooldownCastM > self.p2VelocidadeAtq) or self.primeiroCastM:
+                    self.p2AtaqueM = True
+                    self.CastM.resetar()
+                    self.duracaoCastM = time()
+                    self.primeiroCastM = False
                 
         # evento de saida
         if pg.key.get_pressed()[pg.K_ESCAPE]:
@@ -192,14 +216,35 @@ class telaPrincipal():
         self.xP1CirculoCentralizado = self.xP1+30
         self.yP1CirculoCentralizado = self.yP1+25
         
+        self.xP2CirculoCentralizado = self.xP2+30
+        self.yP2CirculoCentralizado = self.yP2+25
+        
         
         #Ataque Giratório Guerreiro P1
         if self.p1 == 1 and self.p1AtaqueE:
-            pg.draw.circle(self.tela, (0,0,0), (self.xP1CirculoCentralizado, self.yP1CirculoCentralizado), self.raioATQGiratorio, 5)
-            
-            #Se o p2 está localizado na área de p1:
-            if (int(self.xP2) in range (int(self.xP1CirculoCentralizado-self.raioATQGiratorio), int(self.xP1CirculoCentralizado+self.raioATQGiratorio)) or \
-                int (self.xP2+40) in range (int(self.xP1CirculoCentralizado-self.raioATQGiratorio), int(self.xP1CirculoCentralizado+self.raioATQGiratorio))) and \
-                    (int(self.yP2) in range (int(self.yP1CirculoCentralizado-self.raioATQGiratorio), int(self.yP1CirculoCentralizado+self.raioATQGiratorio)) or \
-                        int(self.yP2+55) in range (int(self.yP1CirculoCentralizado-self.raioATQGiratorio), int(self.yP1CirculoCentralizado+self.raioATQGiratorio))):
-                        self.p2Vida = self.p2Vida-self.p1Dano
+            if time() - self.duracaoCastE < 0.1:
+                pg.draw.circle(self.tela, (0,0,0), (self.xP1CirculoCentralizado, self.yP1CirculoCentralizado), self.raioATQGiratorio, 5)
+                #Se o p2 está localizado na área de p1:
+                if ((int(self.xP2) in range (int(self.xP1CirculoCentralizado-self.raioATQGiratorio), int(self.xP1CirculoCentralizado+self.raioATQGiratorio)) or \
+                    int (self.xP2+40) in range (int(self.xP1CirculoCentralizado-self.raioATQGiratorio), int(self.xP1CirculoCentralizado+self.raioATQGiratorio))) and \
+                        (int(self.yP2) in range (int(self.yP1CirculoCentralizado-self.raioATQGiratorio), int(self.yP1CirculoCentralizado+self.raioATQGiratorio)) or \
+                            int(self.yP2+55) in range (int(self.yP1CirculoCentralizado-self.raioATQGiratorio), int(self.yP1CirculoCentralizado+self.raioATQGiratorio)))) and \
+                                self.p2Vida - self.p2VidaAntes == 0:
+                                    self.p2Vida = self.p2Vida-self.p1Dano
+            else:
+                self.p2VidaAntes = self.p2Vida
+          
+        #Ataque Giratório Guerreiro P2                  
+        if self.p2 == 1 and self.p2AtaqueM:
+            if time() - self.duracaoCastM < 0.1:
+                pg.draw.circle(self.tela, (0,0,0), (self.xP2CirculoCentralizado, self.yP2CirculoCentralizado), self.raioATQGiratorio, 5)
+                #Se o p1 está localizado na área de p2:
+                if ((int(self.xP1) in range (int(self.xP2CirculoCentralizado-self.raioATQGiratorio), int(self.xP2CirculoCentralizado+self.raioATQGiratorio)) or \
+                    int (self.xP1+40) in range (int(self.xP2CirculoCentralizado-self.raioATQGiratorio), int(self.xP2CirculoCentralizado+self.raioATQGiratorio))) and \
+                        (int(self.yP1) in range (int(self.yP2CirculoCentralizado-self.raioATQGiratorio), int(self.yP2CirculoCentralizado+self.raioATQGiratorio)) or \
+                            int(self.yP1+55) in range (int(self.yP2CirculoCentralizado-self.raioATQGiratorio), int(self.yP2CirculoCentralizado+self.raioATQGiratorio)))) and \
+                                self.p1Vida - self.p1VidaAntes == 0:
+                                    self.p1Vida = self.p1Vida-self.p2Dano
+        
+            else:
+                self.p1VidaAntes = self.p1Vida

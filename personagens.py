@@ -39,7 +39,7 @@ class Personagem:
         elif self.personagem == 4:
             
             VELOCIDADE = 0.5
-            VIDA = 25
+            VIDA = 30
             VELOCIDADE_ATQ = 1
             DANO = 3
             self.status = (VELOCIDADE, VIDA, 4, VELOCIDADE_ATQ, DANO)
