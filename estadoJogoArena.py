@@ -15,9 +15,7 @@ class EstadoJogo:
         self.cronometro.reset()
 
     def fim_de_jogo(self):
-        if (self.cronometro.tempo_passando() > ConfigJogo.DURACAO_PARTIDA):
-            return True 
-        elif (telaPrincipal.p1Vida == 0) or (telaPrincipal.p2Vida == 0):
+        if (self.cronometro.tempo_passando()>ConfigJogo.DURACAO_PARTIDA) or (telaPrincipal.p1Vida == 0) or (telaPrincipal.p2Vida == 0):
             return True 
         else:
             return False 
