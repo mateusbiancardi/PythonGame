@@ -12,22 +12,32 @@ class telaPrincipal():
         self.tela = tela
         self.encerrada = False
         self.primeiroCastE = True
+        self.primeiroCastQ = True
         self.primeiroCastM = True
+        self.primeiroCastN = True
         
         p1 = Personagem(escolhidos[0], self.tela)
         p2 = Personagem(escolhidos[1], self.tela)
         
         self.CastE = CooldownCast()
+        self.CastQ = CooldownCast()
+        
         self.CastM = CooldownCast()
+        self.CastN = CooldownCast()
         
         p1.stats()
         p2.stats()
         
         self.p1AtaqueE = False
+        self.p1AtaqueQ = False
+        
         self.p2AtaqueM = False
+        self.p2AtaqueN = False
         
         self.p1Velocidade = p1.status[0]
         self.p2Velocidade = p2.status[0]
+        self.p1VelocidadePadrao = p1.status[0]
+        self.p2VelocidadePadrao = p2.status[0]
         
         self.p1Vida = p1.status[1]
         self.p2Vida = p2.status[1]
@@ -44,6 +54,8 @@ class telaPrincipal():
         
         self.p1Dano = p1.status[4]
         self.p2Dano = p2.status[4]
+        self.p1DanoPadrao = p1.status[4]
+        self.p2DanoPadrao = p2.status[4]
         
         
         self.xP1 = ConfigJogo.LARGURA_TELA * (1/3)
@@ -69,11 +81,10 @@ class telaPrincipal():
     def rodar(self):
         while not self.encerrada:
             self.tela.fill((102, 255, 51))
-            self.carregarPersonagem()
             self.tratamentoEventos()
             self.movimento()
             self.ataques()
-            self.personagem()
+            self.carregarPersonagem()
             
             pg.display.flip()
             
@@ -114,6 +125,16 @@ class telaPrincipal():
                     self.primeiroCastE = False
                     
             
+            #Ataque Q
+            if ((event.type == pg.KEYDOWN) and (event.key == pg.K_q)) or (pg.key.get_pressed()[pg.K_q]):
+                cooldownCastQ = self.CastQ.diferenca()
+                
+                if (cooldownCastQ > self.p1VelocidadeAtq*3) or self.primeiroCastQ:
+                    self.p1AtaqueQ = True
+                    self.CastQ.resetar()
+                    self.duracaoCastQ = time()
+                    self.primeiroCastQ = False
+            
             #Personagem 2 (setinhas)
             #Movimentação
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_LEFT)) or (pg.key.get_pressed()[pg.K_LEFT]):
@@ -146,6 +167,17 @@ class telaPrincipal():
                     self.CastM.resetar()
                     self.duracaoCastM = time()
                     self.primeiroCastM = False
+            
+            #Ataque N
+            if ((event.type == pg.KEYDOWN) and (event.key == pg.K_n)) or (pg.key.get_pressed()[pg.K_n]):
+                cooldownCastN = self.CastN.diferenca()
+                
+                if (cooldownCastN > self.p2VelocidadeAtq*3) or self.primeiroCastN:
+                    self.p2AtaqueN = True
+                    self.CastN.resetar()
+                    self.duracaoCastN = time()
+                    self.primeiroCastN = False
+           
                 
         # evento de saida
         if pg.key.get_pressed()[pg.K_ESCAPE]:
@@ -196,9 +228,12 @@ class telaPrincipal():
         elif self.p2 == 4:
             self.sprite2_tamanho = pg.image.load(os.path.join('sprites', 'arqueiro.png'))
             
+        self.personagem()
+            
     
     def personagem (self):
         
+        self.berserker = pg.image.load(os.path.join('sprites', 'berserker.png'))
         font_vida = pg.font.SysFont(None, ConfigJogo.FONTE_VIDA)
         self.textoVida1 = font_vida.render(
             f'{self.p1Vida}/{self.p1VidaTotal}', True, ConfigJogo.COR_VIDA)
@@ -219,8 +254,9 @@ class telaPrincipal():
         self.xP2CirculoCentralizado = self.xP2+30
         self.yP2CirculoCentralizado = self.yP2+25
         
-        
-        #Ataque Giratório Guerreiro P1
+        #Jogador 1
+        #Guerreiro
+        #Ataque Giratório (Q)
         if self.p1 == 1 and self.p1AtaqueE:
             if time() - self.duracaoCastE < 0.1:
                 pg.draw.circle(self.tela, (0,0,0), (self.xP1CirculoCentralizado, self.yP1CirculoCentralizado), self.raioATQGiratorio, 5)
@@ -233,8 +269,21 @@ class telaPrincipal():
                                     self.p2Vida = self.p2Vida-self.p1Dano
             else:
                 self.p2VidaAntes = self.p2Vida
+        
+        #Berserk - Aumenta o dano e velocidade de ataque por um breve momento(E)   
+        if self.p1 == 1 and self.p1AtaqueQ:
+            if time() - self.duracaoCastQ < 3:
+                self.tela.blit(self.berserker, (self.xP1+10, self.yP1-50))
+                self.p1Velocidade = 0.5
+                self.p1Dano = 10
+            else:
+                self.p1Velocidade = self.p1VelocidadePadrao
+                self.p1Dano = self.p1DanoPadrao
+                
           
-        #Ataque Giratório Guerreiro P2                  
+        #Jogador 2
+        #Guerreiro
+        #Ataque Giratório (Q)        
         if self.p2 == 1 and self.p2AtaqueM:
             if time() - self.duracaoCastM < 0.1:
                 pg.draw.circle(self.tela, (0,0,0), (self.xP2CirculoCentralizado, self.yP2CirculoCentralizado), self.raioATQGiratorio, 5)
@@ -248,3 +297,13 @@ class telaPrincipal():
         
             else:
                 self.p1VidaAntes = self.p1Vida
+        
+        #Berserk - Aumenta o dano e velocidade de movimento por um breve momento(E)   
+        if self.p2 == 1 and self.p2AtaqueN:
+            if time() - self.duracaoCastN < 3:
+                self.tela.blit(self.berserker, (self.xP2+10, self.yP2-50))
+                self.p2Velocidade = 0.5
+                self.p2Dano = 10
+            else:
+                self.p2Velocidade = self.p2VelocidadePadrao
+                self.p2Dano = self.p2DanoPadrao
