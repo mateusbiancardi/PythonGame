@@ -26,7 +26,7 @@ class Menu:
         font_titulo = pg.font.SysFont(None, ConfigJogo.FONTE_TITULO)
         font_subtitulo = pg.font.SysFont(None, ConfigJogo.FONTE_SUBTITULO)
         self.titulo = font_titulo.render(
-            f'Jogo de Arena', True, ConfigJogo.COR_TITULO)
+            f'Arena Medieval', True, ConfigJogo.COR_TITULO)
         self.subtitulo = font_subtitulo.render(
             f'Pressione espaço para iniciar', True, ConfigJogo.COR_TITULO)
 
