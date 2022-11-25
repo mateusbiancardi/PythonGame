@@ -77,6 +77,7 @@ class telaPrincipal():
         
         self.raioATQGiratorio = 50
         
+        self.raioATQProjetil = 150
         
     def rodar(self):
         while not self.encerrada:
@@ -307,3 +308,48 @@ class telaPrincipal():
             else:
                 self.p2Velocidade = self.p2VelocidadePadrao
                 self.p2Dano = self.p2DanoPadrao
+        
+        #Jogador 1
+        #Arqueiro
+        #Ataque de flecha
+        if self.p1 == 4 and self.p1AtaqueE:
+            if time() - self.duracaoCastE < 0.2:
+                pg.draw.circle(self.tela, (0,0,0), (self.xP1CirculoCentralizado, self.yP1CirculoCentralizado), self.raioATQProjetil, 5)
+                #se o p2 está na área de alcance do ataque de projétil:
+                if ((int(self.xP2) in range (int(self.xP1CirculoCentralizado - self.raioATQProjetil), int(self.xP1CirculoCentralizado 
+                + self.raioATQProjetil)) or \
+                    int(self.xP2+40) in range (int(self.xP1CirculoCentralizado-self.raioATQProjetil), int(self.xP1CirculoCentralizado
+                    + self.raioATQProjetil))) and \
+                        (int(self.yP2) in range (int(self.yP1CirculoCentralizado-self.raioATQProjetil), int(self.yP1CirculoCentralizado
+                        +self.raioATQProjetil)) or \
+                            int(self.yP2+55) in range (int(self.yP1CirculoCentralizado-self.raioATQProjetil), int(self.
+                            yP1CirculoCentralizado+self.raioATQProjetil)))) and \
+                                self.p2Vida - self.p2VidaAntes == 0:
+                                    pg.draw.line(self.tela, (0,0,0), (self.xP2CirculoCentralizado, self.yP2CirculoCentralizado), (self.xP1CirculoCentralizado, self.yP1CirculoCentralizado), 3)
+                                    self.p2Vida = self.p2Vida - self.p1Dano
+
+            else:
+                self.p2VidaAntes = self.p2Vida
+        
+        #Jogador 2
+        #Arqueiro
+
+        if self.p2 == 4 and self.p2AtaqueM:
+            if time() - self.duracaoCastM < 0.2:
+                pg.draw.circle(self.tela, (0,0,0), (self.xP2CirculoCentralizado, self.yP2CirculoCentralizado), self.raioATQProjetil, 5)
+                #se o p1 está na área de alcance do ataque de projétil:
+                if ((int(self.xP1) in range (int(self.xP2CirculoCentralizado - self.raioATQProjetil), int(self.xPQCirculoCentralizado 
+                + self.raioATQProjetil)) or \
+                    int(self.xP1+40) in range (int(self.xP2CirculoCentralizado-self.raioATQProjetil), int(self.xP2CirculoCentralizado
+                    + self.raioATQProjetil))) and \
+                        (int(self.yP1) in range (int(self.yP2CirculoCentralizado-self.raioATQProjetil), int(self.yP2CirculoCentralizado
+                        +self.raioATQProjetil)) or \
+                            int(self.yP1+55) in range (int(self.yP2CirculoCentralizado-self.raioATQProjetil), int(self.
+                            yP2CirculoCentralizado+self.raioATQProjetil)))) and \
+                                self.p1Vida - self.p1VidaAntes == 0:
+                                    pg.draw.line(self.tela, (0,0,0), (self.xP1CirculoCentralizado, self.yP1CirculoCentralizado), (3,4), 3)
+                                    self.p1Vida = self.p1Vida - self.p2Dano
+
+            else:
+                self.p1VidaAntes = self.p1Vida
+        
