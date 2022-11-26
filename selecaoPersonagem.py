@@ -92,6 +92,14 @@ class telaSelecao:
     def desenha_titulo(self, tela):
         font_titulo = pg.font.SysFont(None, ConfigJogo.FONTE_TITULO)
         
+        font_historia = pg.font.SysFont(None, ConfigJogo.FONTE_SUBTITULO//2)
+
+        self.historia = font_historia.render(
+            f'Era medieval. 2 prisioneiros condenados à morte pela coroa real devem enfrentar todos os súditos do rei em uma arena para sobreviver.', True, ConfigJogo.COR_TITULO)
+        pxh = ConfigJogo.LARGURA_TELA // 8
+        pyh = (0.4 * ConfigJogo.ALTURA_TELA // 2)
+        tela.blit(self.historia, (pxh, pyh))
+
         if self.personagem1 == 0:
             self.titulo = font_titulo.render(
                 f'Selecione o primeiro personagem', True, ConfigJogo.COR_TITULO)
@@ -101,7 +109,7 @@ class telaSelecao:
 
             
         px = ConfigJogo.LARGURA_TELA // 2 - self.titulo.get_size()[0] // 2
-        py = (0.2 * ConfigJogo.ALTURA_TELA // 2)
+        py = (0.1 * ConfigJogo.ALTURA_TELA // 2)
         tela.blit(self.titulo, (px, py))
 
 
@@ -155,3 +163,13 @@ class telaSelecao:
             self.cor_retangulo,
             pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo, self.largura_retangulo, self.altura_retangulo)
         )
+
+    def texto_história(self, tela):
+        font_historia = pg.font.SysFont(None, ConfigJogo.FONTE_HISTORIA)
+
+        self.historia = font_historia.render(
+            f'Era medieval. Você é um prisioneiro condeando à morte que foi jogado em uma arena. Tente derrotar todos os\
+            inimigos e sobreviver!', True, ConfigJogo.COR_HISTORIA)
+        px = ConfigJogo.LARGURA_TELA // 2 
+        py = (0.1 * ConfigJogo.ALTURA_TELA // 2)
+        tela.blit(self.historia, (px, py))

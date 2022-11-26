@@ -76,9 +76,7 @@ class telaPrincipal():
         self.imagerect = self.sprite1_tamanho.get_rect()
         
         self.raioATQGiratorio = 50
-        
-        self.raioATQProjetil = 150
-        
+       
     def rodar(self):
         while not self.encerrada:
             self.tela.fill((102, 255, 51))
@@ -311,7 +309,7 @@ class telaPrincipal():
         
         #Jogador 1
         #Arqueiro
-        #Ataque de flecha
+        #Ataque de flecha(E)
         if self.p1 == 4 and self.p1AtaqueE:
             if time() - self.duracaoCastE < 0.2:
                 pg.draw.circle(self.tela, (0,0,0), (self.xP1CirculoCentralizado, self.yP1CirculoCentralizado), self.raioATQProjetil, 5)
@@ -333,23 +331,10 @@ class telaPrincipal():
         
         #Jogador 2
         #Arqueiro
-
+        #Ataque de flecha(M)
         if self.p2 == 4 and self.p2AtaqueM:
-            if time() - self.duracaoCastM < 0.2:
-                pg.draw.circle(self.tela, (0,0,0), (self.xP2CirculoCentralizado, self.yP2CirculoCentralizado), self.raioATQProjetil, 5)
-                #se o p1 está na área de alcance do ataque de projétil:
-                if ((int(self.xP1) in range (int(self.xP2CirculoCentralizado - self.raioATQProjetil), int(self.xPQCirculoCentralizado 
-                + self.raioATQProjetil)) or \
-                    int(self.xP1+40) in range (int(self.xP2CirculoCentralizado-self.raioATQProjetil), int(self.xP2CirculoCentralizado
-                    + self.raioATQProjetil))) and \
-                        (int(self.yP1) in range (int(self.yP2CirculoCentralizado-self.raioATQProjetil), int(self.yP2CirculoCentralizado
-                        +self.raioATQProjetil)) or \
-                            int(self.yP1+55) in range (int(self.yP2CirculoCentralizado-self.raioATQProjetil), int(self.
-                            yP2CirculoCentralizado+self.raioATQProjetil)))) and \
-                                self.p1Vida - self.p1VidaAntes == 0:
-                                    pg.draw.line(self.tela, (0,0,0), (self.xP1CirculoCentralizado, self.yP1CirculoCentralizado), (3,4), 3)
-                                    self.p1Vida = self.p1Vida - self.p2Dano
-
+            if time() - self.duracaoCastM < 0.1:
+                pass
             else:
                 self.p1VidaAntes = self.p1Vida
         
