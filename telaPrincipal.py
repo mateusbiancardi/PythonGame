@@ -373,3 +373,19 @@ class telaPrincipal():
             else:
                 self.p1VidaAntes = self.p1Vida
         
+        #Jogador 1
+        #Mago
+        #Ataque do mouse
+
+        if self.p1 == 2 and self.p1AtaqueE:
+            if time() - self.duracaoCastE < 3:
+                pg.time.wait(3000)
+                pg.mouse.set_pos(self.xP1CirculoCentralizado, self.yP1CirculoCentralizado)
+                pg.mouse.get_pos
+                pg.display.update()
+                if pg.MOUSEBUTTONDOWN:
+                    if (pg.mouse.get_pos in range (int(self.xP2CirculoCentralizado-50), int(self.xP2CirculoCentralizado+50))) and \
+                    (pg.mouse.get_pos in range (int(self.yP2CirculoCentralizado-50), int(self.yP2CirculoCentralizado+50))):
+                        pg.draw.circle(self.tela, (0,255,0), (self.xP2CirculoCentralizado, self.yP2CirculoCentralizado), 50, 5)
+                        self.p2Vida = self.p2Vida + 1.5*self.p1Dano
+                        
