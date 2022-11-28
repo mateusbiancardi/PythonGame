@@ -1,6 +1,7 @@
 import pygame as pg
 import sys
 import os
+import math
 from configJogo import ConfigJogo
 from selecaoPersonagem import telaSelecao
 from personagens import Personagem
@@ -11,10 +12,12 @@ class telaPrincipal():
     def __init__(self, tela, escolhidos):
         self.tela = tela
         self.encerrada = False
+        self.mirado = False
         self.primeiroCastE = True
         self.primeiroCastQ = True
         self.primeiroCastM = True
         self.primeiroCastN = True
+        
         
         p1 = Personagem(escolhidos[0], self.tela)
         p2 = Personagem(escolhidos[1], self.tela)
@@ -34,10 +37,13 @@ class telaPrincipal():
         self.p2AtaqueM = False
         self.p2AtaqueN = False
         
+        
         self.p1Velocidade = p1.status[0]
         self.p2Velocidade = p2.status[0]
         self.p1VelocidadePadrao = p1.status[0]
         self.p2VelocidadePadrao = p2.status[0]
+        
+        self.velocidadeFlecha = 0.8
         
         self.p1Vida = p1.status[1]
         self.p2Vida = p2.status[1]
@@ -76,13 +82,16 @@ class telaPrincipal():
         self.imagerect = self.sprite1_tamanho.get_rect()
         
         self.raioATQGiratorio = 50
+        self.raioATQProjetil = 5
+        self.xP1Flecha = self.xP1
+        self.yP1Flecha = self.yP1
        
     def rodar(self):
         while not self.encerrada:
             self.tela.fill((102, 255, 51))
             self.tratamentoEventos()
-            self.movimento()
             self.ataques()
+            self.movimento()
             self.carregarPersonagem()
             
             pg.display.flip()
@@ -95,15 +104,19 @@ class telaPrincipal():
             #Movimentação
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_a)) or (pg.key.get_pressed()[pg.K_a]):
                 self.v_xP1 = -self.p1Velocidade
+                self.direcaoP1 = 'esquerda'
 
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_d)) or (pg.key.get_pressed()[pg.K_d]):
                 self.v_xP1 = self.p1Velocidade
+                self.direcaoP1 = 'direita'
                 
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_w)) or (pg.key.get_pressed()[pg.K_w]):
                 self.v_yP1 = -self.p1Velocidade
+                self.direcaoP1 = 'cima'
 
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_s)) or (pg.key.get_pressed()[pg.K_s]):
                 self.v_yP1 = self.p1Velocidade
+                self.direcaoP1 = 'baixo'
                 
             if ((event.type == pg.KEYUP) and (event.key == pg.K_a)) or \
                         ((event.type == pg.KEYUP) and (event.key == pg.K_d)):
@@ -176,6 +189,11 @@ class telaPrincipal():
                     self.CastN.resetar()
                     self.duracaoCastN = time()
                     self.primeiroCastN = False
+                    
+            #Mouse
+            if event.type == pg.MOUSEBUTTONUP:
+                self.mouse_pos = pg.mouse.get_pos()
+                self.P1primeiroCastFlecha = True
            
                 
         # evento de saida
@@ -193,6 +211,9 @@ class telaPrincipal():
             self.v_xP2 = 0
         if (self.yP2 + self.v_yP2 < 0) or (self.yP2 + self.v_yP2 > ConfigJogo.ALTURA_TELA-50):
             self.v_yP2 = 0
+            
+        self.xP1Flecha += self.v_xP1Flecha
+        self.yP1Flecha += self.v_yP1Flecha
         
         self.xP1 += self.v_xP1
         self.yP1 += self.v_yP1
@@ -252,6 +273,9 @@ class telaPrincipal():
         
         self.xP2CirculoCentralizado = self.xP2+30
         self.yP2CirculoCentralizado = self.yP2+25
+           
+        self.v_xP1Flecha = 0
+        self.v_yP1Flecha = 0
         
         #Jogador 1
         #Guerreiro
@@ -306,24 +330,35 @@ class telaPrincipal():
             else:
                 self.p2Velocidade = self.p2VelocidadePadrao
                 self.p2Dano = self.p2DanoPadrao
-        
+    
         #Jogador 1
         #Arqueiro
         #Ataque de flecha(E)
         if self.p1 == 4 and self.p1AtaqueE:
-            if time() - self.duracaoCastE < 0.2:
-                pg.draw.circle(self.tela, (0,0,0), (self.xP1CirculoCentralizado, self.yP1CirculoCentralizado), self.raioATQProjetil, 5)
+            if time() - self.duracaoCastE < 1:
+                if self.P1primeiroCastFlecha:
+                    a = math.atan2(
+                        self.xP1Flecha - self.mouse_pos[1],
+                        self.yP1Flecha - self.mouse_pos[0])
+                    self.P1primeiroCastFlecha = False
+                    
+                self.mouse_pos = ()
+                
+                self.v_xP1Flecha = -0.75 * math.cos(a)
+                self.v_yP1Flecha = -0.75 * math.sin(a)
+    
+                pg.draw.circle(self.tela, (0,0,0), (self.xP1Flecha, self.yP1CirculoCentralizado), self.raioATQProjetil, 5)
                 #se o p2 está na área de alcance do ataque de projétil:
-                if ((int(self.xP2) in range (int(self.xP1CirculoCentralizado - self.raioATQProjetil), int(self.xP1CirculoCentralizado 
+                if ((int(self.xP2) in range (int(self.xP1Flecha - self.raioATQProjetil), int(self.xP1Flecha 
                 + self.raioATQProjetil)) or \
-                    int(self.xP2+40) in range (int(self.xP1CirculoCentralizado-self.raioATQProjetil), int(self.xP1CirculoCentralizado
+                    int(self.xP2+40) in range (int(self.xP1Flecha-self.raioATQProjetil), int(self.xP1Flecha
                     + self.raioATQProjetil))) and \
-                        (int(self.yP2) in range (int(self.yP1CirculoCentralizado-self.raioATQProjetil), int(self.yP1CirculoCentralizado
+                        (int(self.yP2) in range (int(self.yP1Flecha-self.raioATQProjetil), int(self.yP1Flecha
                         +self.raioATQProjetil)) or \
-                            int(self.yP2+55) in range (int(self.yP1CirculoCentralizado-self.raioATQProjetil), int(self.
-                            yP1CirculoCentralizado+self.raioATQProjetil)))) and \
+                            int(self.yP2+55) in range (int(self.yP1Flecha-self.raioATQProjetil), int(self.
+                            yP1Flecha+self.raioATQProjetil)))) and \
                                 self.p2Vida - self.p2VidaAntes == 0:
-                                    pg.draw.line(self.tela, (0,0,0), (self.xP2CirculoCentralizado, self.yP2CirculoCentralizado), (self.xP1CirculoCentralizado, self.yP1CirculoCentralizado), 3)
+                                    #pg.draw.line(self.tela, (0,0,0), (self.xP2CirculoCentralizado, self.yP2CirculoCentralizado), (self.xP1CirculoCentralizado, self.yP1CirculoCentralizado), 3)
                                     self.p2Vida = self.p2Vida - self.p1Dano
 
             else:
