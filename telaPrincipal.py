@@ -2,6 +2,7 @@ import pygame as pg
 import sys
 import os
 import math
+import time
 from configJogo import ConfigJogo
 from selecaoPersonagem import telaSelecao
 from personagens import Personagem
@@ -18,6 +19,8 @@ class telaPrincipal():
         self.primeiroCastM = True
         self.primeiroCastN = True
         
+        self.travarMovimento = False
+        self.posicaoAdquirida = False
         
         p1 = Personagem(escolhidos[0], self.tela)
         p2 = Personagem(escolhidos[1], self.tela)
@@ -135,6 +138,8 @@ class telaPrincipal():
                     self.CastE.resetar()
                     self.duracaoCastE = time()
                     self.primeiroCastE = False
+                    self.posicaoAdquirida = False
+                    self.clique = False
                     
             
             #Ataque Q
@@ -192,8 +197,9 @@ class telaPrincipal():
                     
             #Mouse
             if event.type == pg.MOUSEBUTTONUP:
-                self.mouse_pos = pg.mouse.get_pos()
-                self.P1primeiroCastFlecha = True
+               self.mouse_pos = pg.mouse.get_pos()
+               self.clique = True
+               self.P1primeiroCastFlecha = True
            
                 
         # evento de saida
@@ -202,14 +208,14 @@ class telaPrincipal():
     
     def movimento(self):
         
-        if (self.xP1 + self.v_xP1 < 0) or (self.xP1 + self.v_xP1 > ConfigJogo.LARGURA_TELA-50):
+        if ((self.xP1 + self.v_xP1 < 0) or (self.xP1 + self.v_xP1 > ConfigJogo.LARGURA_TELA-50)) or self.travarMovimento:
             self.v_xP1 = 0
-        if (self.yP1 + self.v_yP1 < 0) or (self.yP1 + self.v_yP1 > ConfigJogo.ALTURA_TELA-50):
+        if ((self.yP1 + self.v_yP1 < 0) or (self.yP1 + self.v_yP1 > ConfigJogo.ALTURA_TELA-50)) or self.travarMovimento:
             self.v_yP1 = 0
             
-        if (self.xP2 + self.v_xP2 < 0) or (self.xP2 + self.v_xP2 > ConfigJogo.LARGURA_TELA-50):
+        if ((self.xP2 + self.v_xP2 < 0) or (self.xP2 + self.v_xP2 > ConfigJogo.LARGURA_TELA-50)) or self.travarMovimento:
             self.v_xP2 = 0
-        if (self.yP2 + self.v_yP2 < 0) or (self.yP2 + self.v_yP2 > ConfigJogo.ALTURA_TELA-50):
+        if ((self.yP2 + self.v_yP2 < 0) or (self.yP2 + self.v_yP2 > ConfigJogo.ALTURA_TELA-50)) or self.travarMovimento:
             self.v_yP2 = 0
             
         self.xP1Flecha += self.v_xP1Flecha
@@ -277,9 +283,11 @@ class telaPrincipal():
         self.v_xP1Flecha = 0
         self.v_yP1Flecha = 0
         
+        
+        
         #Jogador 1
         #Guerreiro
-        #Ataque Giratório (Q)
+        #Ataque Giratório (E)
         if self.p1 == 1 and self.p1AtaqueE:
             if time() - self.duracaoCastE < 0.1:
                 pg.draw.circle(self.tela, (0,0,0), (self.xP1CirculoCentralizado, self.yP1CirculoCentralizado), self.raioATQGiratorio, 5)
@@ -293,7 +301,7 @@ class telaPrincipal():
             else:
                 self.p2VidaAntes = self.p2Vida
         
-        #Berserk - Aumenta o dano e velocidade de ataque por um breve momento(E)   
+        #Berserk - Aumenta o dano e velocidade de ataque por um breve momento(Q)   
         if self.p1 == 1 and self.p1AtaqueQ:
             if time() - self.duracaoCastQ < 3:
                 self.tela.blit(self.berserker, (self.xP1+10, self.yP1-50))
@@ -306,7 +314,7 @@ class telaPrincipal():
           
         #Jogador 2
         #Guerreiro
-        #Ataque Giratório (Q)        
+        #Ataque Giratório (E)        
         if self.p2 == 1 and self.p2AtaqueM:
             if time() - self.duracaoCastM < 0.1:
                 pg.draw.circle(self.tela, (0,0,0), (self.xP2CirculoCentralizado, self.yP2CirculoCentralizado), self.raioATQGiratorio, 5)
@@ -321,7 +329,7 @@ class telaPrincipal():
             else:
                 self.p1VidaAntes = self.p1Vida
         
-        #Berserk - Aumenta o dano e velocidade de movimento por um breve momento(E)   
+        #Berserk - Aumenta o dano e velocidade de movimento por um breve momento(Q)   
         if self.p2 == 1 and self.p2AtaqueN:
             if time() - self.duracaoCastN < 3:
                 self.tela.blit(self.berserker, (self.xP2+10, self.yP2-50))
@@ -379,13 +387,27 @@ class telaPrincipal():
 
         if self.p1 == 2 and self.p1AtaqueE:
             if time() - self.duracaoCastE < 3:
-                pg.time.wait(3000)
-                pg.mouse.set_pos(self.xP1CirculoCentralizado, self.yP1CirculoCentralizado)
-                pg.mouse.get_pos
-                pg.display.update()
-                if pg.MOUSEBUTTONDOWN:
-                    if (pg.mouse.get_pos in range (int(self.xP2CirculoCentralizado-50), int(self.xP2CirculoCentralizado+50))) and \
-                    (pg.mouse.get_pos in range (int(self.yP2CirculoCentralizado-50), int(self.yP2CirculoCentralizado+50))):
-                        pg.draw.circle(self.tela, (0,255,0), (self.xP2CirculoCentralizado, self.yP2CirculoCentralizado), 50, 5)
-                        self.p2Vida = self.p2Vida + 1.5*self.p1Dano
+                
+                while not self.posicaoAdquirida:
+                    self.travarMovimento = True
+                    if self.clique:
+                        self.posicaoAdquirida = True
+                
+                if self.posicaoAdquirida:        
+                    self.travarMovimento = False  
+                    pg.draw.circle(self.tela, (255,0,0), (self.mouse_pos[0], self.mouse_pos[1]), self.raioATQGiratorio, 5)  
+                        
+                #self.posicaoAdquirida = False
+                #pg.mouse.set_pos(self.xP1CirculoCentralizado, self.yP1CirculoCentralizado)
+                
+                #pg.display.update()
+                #Se o p2 está localizado na área de p1:
+                if ((int(self.xP2) in range (int(self.mouse_pos[0]-self.raioATQGiratorio), int(self.mouse_pos[0]+self.raioATQGiratorio)) or \
+                    int (self.xP2+40) in range (int(self.mouse_pos[0]-self.raioATQGiratorio), int(self.mouse_pos[0]+self.raioATQGiratorio))) and \
+                        (int(self.yP2) in range (int(self.mouse_pos[1]-self.raioATQGiratorio), int(self.yP1CirculoCentralizado+self.raioATQGiratorio)) or \
+                            int(self.yP2+55) in range (int(self.mouse_pos[1]-self.raioATQGiratorio), int(self.mouse_pos[1]+self.raioATQGiratorio)))) and \
+                                self.p2Vida - self.p2VidaAntes == 0:
+                                    self.p2Vida = self.p2Vida-self.p1Dano
+            else:
+                self.p2VidaAntes = self.p2Vida
                         
