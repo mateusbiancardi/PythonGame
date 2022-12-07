@@ -47,10 +47,16 @@ class telaPrincipal():
         self.p2VelocidadePadrao = p2.status[0]
         
         self.v_Flecha = 0.8
+        
         self.xP1FlechaEsquerda = 0
         self.xP1FlechaDireita = 0
         self.yP1FlechaCima = 0
         self.yP1FlechaBaixo = 0
+        
+        self.xP2FlechaEsquerda = 0
+        self.xP2FlechaDireita = 0
+        self.yP2FlechaCima = 0
+        self.yP2FlechaBaixo = 0
         
         self.p1Vida = p1.status[1]
         self.p2Vida = p2.status[1]
@@ -146,8 +152,7 @@ class telaPrincipal():
                     
                     self.xP1Flecha = self.xP1+20
                     self.yP1Flecha = self.yP1+25
-                    self.xP2Flecha = self.xP2+20
-                    self.yP2Flecha = self.yP2+25
+                    
                     
             
             #Ataque Q
@@ -194,6 +199,15 @@ class telaPrincipal():
                     self.primeiroCastM = False
                     self.posicaoAdquirida = False
                     self.clique = False
+                    
+                    self.xP2Flecha = self.xP2+20
+                    self.yP2Flecha = self.yP2+25
+                    
+                    
+                    self.xP2FlechaEsquerda = self.xP2+20
+                    self.xP2FlechaDireita = self.xP2+20
+                    self.yP2FlechaCima = self.yP2+25
+                    self.yP2FlechaBaixo = self.yP2+25
             
             #Ataque N
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_n)) or (pg.key.get_pressed()[pg.K_n]):
@@ -235,6 +249,11 @@ class telaPrincipal():
         self.yP1FlechaCima += -self.v_Flecha
         self.yP1FlechaBaixo += self.v_Flecha
         
+        self.xP2FlechaEsquerda += -self.v_Flecha
+        self.xP2FlechaDireita += self.v_Flecha
+        self.yP2FlechaCima += -self.v_Flecha
+        self.yP2FlechaBaixo += self.v_Flecha
+        
         self.xP1 += self.v_xP1
         self.yP1 += self.v_yP1
             
@@ -267,6 +286,8 @@ class telaPrincipal():
             
         elif self.p2 == 4:
             self.sprite2_tamanho = pg.image.load(os.path.join('sprites', 'arqueiro.png'))
+            
+        self.sprite3_minion = pg.image.load(os.path.join('sprites', 'minion.png'))
             
         self.personagem()
             
@@ -354,13 +375,37 @@ class telaPrincipal():
                 pg.draw.circle(self.tela, (0,0,0), (self.xP1Flecha, self.yP1FlechaBaixo), self.raioATQProjetil, 5)
                 
                 #se o p2 está na área de alcance do ataque de projétil:
-                if ((int(self.xP2) in range (int(self.xP1FlechaEsquerda - self.raioATQProjetil), int(self.xP1FlechaEsquerda + self.raioATQProjetil)) or \
-                    int(self.xP2+40) in range (int(self.xP1FlechaEsquerda-self.raioATQProjetil), int(self.xP1FlechaEsquerda + self.raioATQProjetil))) and \
-                        (int(self.yP2) in range (int(self.yP1Flecha-self.raioATQProjetil), int(self.yP1Flecha +self.raioATQProjetil)) or \
-                            int(self.yP2+55) in range (int(self.yP1Flecha-self.raioATQProjetil), int(self.yP1Flecha+self.raioATQProjetil)))) and \
+                #projetil da esquerda
+                if (((int(self.xP1FlechaEsquerda - self.raioATQProjetil) in range (int(self.xP2), int(self.xP2+40))) or \
+                    int(self.xP1FlechaEsquerda + self.raioATQProjetil) in range (int(self.xP2), int(self.xP2+40))) and \
+                        ((int(self.yP1Flecha - self.raioATQProjetil) in range (int(self.yP2), int(self.yP2+55))) or \
+                            int(self.yP1Flecha + self.raioATQProjetil) in range (int(self.yP2), int(self.yP2+55)))) and \
                                 self.p2Vida - self.p2VidaAntes == 0:
-                                    #pg.draw.line(self.tela, (0,0,0), (self.xP2CirculoCentralizado, self.yP2CirculoCentralizado), (self.xP1CirculoCentralizado, self.yP1CirculoCentralizado), 3)
-                                    self.p2Vida = self.p2Vida - self.p1Dano
+                                    self.p2Vida = self.p2Vida-self.p1Dano
+                   
+                #projetil da direita                 
+                if (((int(self.xP1FlechaDireita - self.raioATQProjetil) in range (int(self.xP2), int(self.xP2+40))) or \
+                    int(self.xP1FlechaDireita + self.raioATQProjetil) in range (int(self.xP2), int(self.xP2+40))) and \
+                        ((int(self.yP1Flecha - self.raioATQProjetil) in range (int(self.yP2), int(self.yP2+55))) or \
+                            int(self.yP1Flecha + self.raioATQProjetil) in range (int(self.yP2), int(self.yP2+55)))) and \
+                                self.p2Vida - self.p2VidaAntes == 0:
+                                    self.p2Vida = self.p2Vida-self.p1Dano
+                                    
+                #projetil de cima                
+                if (((int(self.xP1Flecha - self.raioATQProjetil) in range (int(self.xP2), int(self.xP2+40))) or \
+                    int(self.xP1Flecha + self.raioATQProjetil) in range (int(self.xP2), int(self.xP2+40))) and \
+                        ((int(self.yP1FlechaCima - self.raioATQProjetil) in range (int(self.yP2), int(self.yP2+55))) or \
+                            int(self.yP1FlechaCima + self.raioATQProjetil) in range (int(self.yP2), int(self.yP2+55)))) and \
+                                self.p2Vida - self.p2VidaAntes == 0:
+                                    self.p2Vida = self.p2Vida-self.p1Dano
+                                    
+                #projetil de baixo               
+                if (((int(self.xP1Flecha - self.raioATQProjetil) in range (int(self.xP2), int(self.xP2+40))) or \
+                    int(self.xP1Flecha + self.raioATQProjetil) in range (int(self.xP2), int(self.xP2+40))) and \
+                        ((int(self.yP1FlechaBaixo - self.raioATQProjetil) in range (int(self.yP2), int(self.yP2+55))) or \
+                            int(self.yP1FlechaBaixo + self.raioATQProjetil) in range (int(self.yP2), int(self.yP2+55)))) and \
+                                self.p2Vida - self.p2VidaAntes == 0:
+                                    self.p2Vida = self.p2Vida-self.p1Dano
 
             else:
                 self.p2VidaAntes = self.p2Vida  
@@ -413,3 +458,49 @@ class telaPrincipal():
                                         self.p1Vida = self.p1Vida-self.p2Dano
             else:
                 self.p1VidaAntes = self.p1Vida
+                
+        #Arqueiro
+        #Ataque de flecha (M) - Atira flecha nas 4 direções
+        if self.p2 == 4 and self.p2AtaqueM:
+            if time() - self.duracaoCastM < 1:
+                
+                pg.draw.circle(self.tela, (0,0,0), (self.xP2FlechaEsquerda, self.yP2Flecha), self.raioATQProjetil, 5)
+                pg.draw.circle(self.tela, (0,0,0), (self.xP2FlechaDireita, self.yP2Flecha), self.raioATQProjetil, 5)
+                pg.draw.circle(self.tela, (0,0,0), (self.xP2Flecha, self.yP2FlechaCima), self.raioATQProjetil, 5)
+                pg.draw.circle(self.tela, (0,0,0), (self.xP2Flecha, self.yP2FlechaBaixo), self.raioATQProjetil, 5)
+                
+                #se o p2 está na área de alcance do ataque de projétil:
+                #projetil da esquerda
+                if (((int(self.xP2FlechaEsquerda - self.raioATQProjetil) in range (int(self.xP1), int(self.xP1+40))) or \
+                    int(self.xP2FlechaEsquerda + self.raioATQProjetil) in range (int(self.xP1), int(self.xP1+40))) and \
+                        ((int(self.yP2Flecha - self.raioATQProjetil) in range (int(self.yP1), int(self.yP1+55))) or \
+                            int(self.yP2Flecha + self.raioATQProjetil) in range (int(self.yP1), int(self.yP1+55)))) and \
+                                self.p1Vida - self.p1VidaAntes == 0:
+                                    self.p1Vida = self.p1Vida-self.p2Dano
+                   
+                #projetil da direita                 
+                if (((int(self.xP2FlechaDireita - self.raioATQProjetil) in range (int(self.xP1), int(self.xP1+40))) or \
+                    int(self.xP2FlechaDireita + self.raioATQProjetil) in range (int(self.xP1), int(self.xP1+40))) and \
+                        ((int(self.yP2Flecha - self.raioATQProjetil) in range (int(self.yP1), int(self.yP1+55))) or \
+                            int(self.yP2Flecha + self.raioATQProjetil) in range (int(self.yP1), int(self.yP1+55)))) and \
+                                self.p1Vida - self.p1VidaAntes == 0:
+                                    self.p1Vida = self.p1Vida-self.p2Dano
+                                    
+                #projetil de cima                
+                if (((int(self.xP2Flecha - self.raioATQProjetil) in range (int(self.xP1), int(self.xP1+40))) or \
+                    int(self.xP2Flecha + self.raioATQProjetil) in range (int(self.xP1), int(self.xP1+40))) and \
+                        ((int(self.yP2FlechaCima - self.raioATQProjetil) in range (int(self.yP1), int(self.yP1+55))) or \
+                            int(self.yP2FlechaCima + self.raioATQProjetil) in range (int(self.yP1), int(self.yP1+55)))) and \
+                                self.p1Vida - self.p1VidaAntes == 0:
+                                    self.p1Vida = self.p1Vida-self.p2Dano
+                                    
+                #projetil de baixo               
+                if (((int(self.xP2Flecha - self.raioATQProjetil) in range (int(self.xP1), int(self.xP1+40))) or \
+                    int(self.xP2Flecha + self.raioATQProjetil) in range (int(self.xP1), int(self.xP1+40))) and \
+                        ((int(self.yP2FlechaBaixo - self.raioATQProjetil) in range (int(self.yP1), int(self.yP1+55))) or \
+                            int(self.yP2FlechaBaixo + self.raioATQProjetil) in range (int(self.yP1), int(self.yP1+55)))) and \
+                                self.p1Vida - self.p1VidaAntes == 0:
+                                    self.p1Vida = self.p1Vida-self.p2Dano
+
+            else:
+                self.p1VidaAntes = self.p1Vida 
