@@ -76,11 +76,14 @@ class telaPrincipal():
         self.p1DanoPadrao = p1.status[4]
         self.p2DanoPadrao = p2.status[4]
         
-        
         self.xP1 = ConfigJogo.LARGURA_TELA * (1/3)
         self.yP1 = ConfigJogo.ALTURA_TELA // 2
         self.v_xP1 = 0
         self.v_yP1 = 0
+        
+        self.v_Lacaio = 0.6
+        self.xP1Lacaio = 0
+        self.yP1Lacaio = 0
         
         self.xP2 = ConfigJogo.LARGURA_TELA * (2/3)
         self.yP2 = ConfigJogo.ALTURA_TELA // 2
@@ -142,8 +145,11 @@ class telaPrincipal():
                     self.CastE.resetar()
                     self.duracaoCastE = time()
                     self.primeiroCastE = False
+                    
                     self.posicaoAdquirida = False
                     self.clique = False
+                    
+                    self.p1VidaLacaio = 3
                     
                     self.xP1FlechaEsquerda = self.xP1+20
                     self.xP1FlechaDireita = self.xP1+20
@@ -152,6 +158,9 @@ class telaPrincipal():
                     
                     self.xP1Flecha = self.xP1+20
                     self.yP1Flecha = self.yP1+25
+                    
+                    self.xP1Lacaio = self.xP1
+                    self.yP1Lacaio = self.yP1
                     
                     
             
@@ -295,6 +304,7 @@ class telaPrincipal():
     def personagem (self):
         
         self.berserker = pg.image.load(os.path.join('sprites', 'berserker.png'))
+        self.lacaio = pg.image.load(os.path.join('sprites', 'minion.png'))
         font_vida = pg.font.SysFont(None, ConfigJogo.FONTE_VIDA)
         self.textoVida1 = font_vida.render(
             f'{self.p1Vida}/{self.p1VidaTotal}', True, ConfigJogo.COR_VIDA)
@@ -363,6 +373,41 @@ class telaPrincipal():
             else:
                 self.p2VidaAntes = self.p2Vida
                 
+        #Xamã
+        #Invocar Lacaio (E)
+        if self.p1 == 3 and self.p1AtaqueE:
+            if time() - self.duracaoCastE < 3:
+                self.tela.blit(self.lacaio, (self.xP1Lacaio, self.yP1Lacaio))
+                
+                dist = math.sqrt(
+                    (self.xP2 - self.xP1Lacaio) ** 2 +
+                    (self.yP2 - self.yP1Lacaio) ** 2
+                )
+
+                if dist > 1:
+                    
+                    # 1) primeiro calcula a direcao
+                    self.P1v_x = self.xP2 - self.xP1Lacaio
+                    self.P1v_y = self.yP2 - self.yP1Lacaio
+                    # 2) faz o tamanho do vetor igual a 1 (normalizacao)
+                    norma = math.sqrt(self.P1v_x ** 2 + self.P1v_y ** 2)
+                    self.P1v_x /= norma
+                    self.P1v_y /= norma
+                    # 3) ajusta o tamanho para ser igual à constante self.v_Lacaio
+                    self.P1v_x *= self.v_Lacaio
+                    self.P1v_y *= self.v_Lacaio
+                else:
+                    if self.p2VidaAntes == self.p2Vida:
+                        self.p2Vida = self.p2Vida-self.p1Dano
+                    self.P1v_x = 0
+                    self.P1v_y = 0
+
+                # Atualiza a posicao do lacaio de acordo com a velocidade
+                self.xP1Lacaio += self.P1v_x
+                self.yP1Lacaio += self.P1v_y
+                
+            else:
+                self.p2VidaAntes = self.p2Vida
                 
         #Arqueiro
         #Ataque de flecha (E) - Atira flecha nas 4 direções
