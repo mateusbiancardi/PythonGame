@@ -84,6 +84,8 @@ class telaPrincipal():
         self.v_Lacaio = 0.6
         self.xP1Lacaio = 0
         self.yP1Lacaio = 0
+        self.xP2Lacaio = 0
+        self.yP2Lacaio = 0
         
         self.xP2 = ConfigJogo.LARGURA_TELA * (2/3)
         self.yP2 = ConfigJogo.ALTURA_TELA // 2
@@ -217,6 +219,9 @@ class telaPrincipal():
                     self.xP2FlechaDireita = self.xP2+20
                     self.yP2FlechaCima = self.yP2+25
                     self.yP2FlechaBaixo = self.yP2+25
+                    
+                    self.xP2Lacaio = self.xP2
+                    self.yP2Lacaio = self.yP2
             
             #Ataque N
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_n)) or (pg.key.get_pressed()[pg.K_n]):
@@ -379,20 +384,20 @@ class telaPrincipal():
             if time() - self.duracaoCastE < 3:
                 self.tela.blit(self.lacaio, (self.xP1Lacaio, self.yP1Lacaio))
                 
-                dist = math.sqrt(
+                distP2 = math.sqrt(
                     (self.xP2 - self.xP1Lacaio) ** 2 +
                     (self.yP2 - self.yP1Lacaio) ** 2
                 )
 
-                if dist > 1:
+                if distP2 > 1:
                     
                     # 1) primeiro calcula a direcao
                     self.P1v_x = self.xP2 - self.xP1Lacaio
                     self.P1v_y = self.yP2 - self.yP1Lacaio
                     # 2) faz o tamanho do vetor igual a 1 (normalizacao)
-                    norma = math.sqrt(self.P1v_x ** 2 + self.P1v_y ** 2)
-                    self.P1v_x /= norma
-                    self.P1v_y /= norma
+                    normaP1 = math.sqrt(self.P1v_x ** 2 + self.P1v_y ** 2)
+                    self.P1v_x /= normaP1
+                    self.P1v_y /= normaP1
                     # 3) ajusta o tamanho para ser igual à constante self.v_Lacaio
                     self.P1v_x *= self.v_Lacaio
                     self.P1v_y *= self.v_Lacaio
@@ -501,6 +506,42 @@ class telaPrincipal():
                                 int(self.yP1+55) in range (int(self.mouse_pos[1]-self.raioATQGiratorio), int(self.mouse_pos[1]+self.raioATQGiratorio)))) and \
                                     self.p1Vida - self.p1VidaAntes == 0:
                                         self.p1Vida = self.p1Vida-self.p2Dano
+            else:
+                self.p1VidaAntes = self.p1Vida
+                
+        #Xamã  
+        #Invocar Lacaio (M)
+        if self.p1 == 3 and self.p2AtaqueM:
+            if time() - self.duracaoCastM < 3:
+                self.tela.blit(self.lacaio, (self.xP2Lacaio, self.yP2Lacaio))
+                
+                distP1 = math.sqrt(
+                    (self.xP1 - self.xP2Lacaio) ** 2 +
+                    (self.yP1 - self.yP2Lacaio) ** 2
+                )
+
+                if distP1 > 1:
+                    
+                    # 1) primeiro calcula a direcao
+                    self.P2v_x = self.xP1 - self.xP2Lacaio
+                    self.P2v_y = self.yP1 - self.yP2Lacaio
+                    # 2) faz o tamanho do vetor igual a 1 (normalizacao)
+                    normaP2 = math.sqrt(self.P2v_x ** 2 + self.P2v_y ** 2)
+                    self.P2v_x /= normaP2
+                    self.P2v_y /= normaP2
+                    # 3) ajusta o tamanho para ser igual à constante self.v_Lacaio
+                    self.P2v_x *= self.v_Lacaio
+                    self.P2v_y *= self.v_Lacaio
+                else:
+                    if self.p1VidaAntes == self.p1Vida:
+                        self.p1Vida = self.p1Vida-self.p2Dano
+                    self.P2v_x = 0
+                    self.P2v_y = 0
+
+                # Atualiza a posicao do lacaio de acordo com a velocidade
+                self.xP2Lacaio += self.P2v_x
+                self.yP2Lacaio += self.P2v_y
+                
             else:
                 self.p1VidaAntes = self.p1Vida
                 
