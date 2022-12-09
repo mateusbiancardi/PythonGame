@@ -8,6 +8,7 @@ from selecaoPersonagem import telaSelecao
 from personagens import Personagem
 from cooldownCast import CooldownCast
 from time import time
+from blocos import bloco
 
 class telaPrincipal():
     def __init__(self, tela, escolhidos):
@@ -99,17 +100,43 @@ class telaPrincipal():
         
         self.imagerect = self.sprite1_tamanho.get_rect()
         
+        self.display_surface = pg.display.get_surface()
+        self.sprites_visiveis = pg.sprite.Group()
+        self.sprites_obstaculos = pg.sprite.Group()
+        self.criar_mapa()
+
         self.raioATQGiratorio = 50
         self.raioATQProjetil = 5
-       
+
+    def criar_mapa(self):
+        for row_index, row in enumerate(ConfigJogo.MAPA_JOGO):
+            for col_index, col in enumerate(row):
+                x = col_index * 32
+                y = row_index * 32
+                
+
+                if col == 8:
+                    bloco((x,y), [self.sprites_visiveis, self.sprites_obstaculos], 8)
+                if col == 5:
+                    bloco((x,y), [self.sprites_visiveis, self.sprites_obstaculos], 5)
+                if col == 4:
+                    bloco((x,y), [self.sprites_visiveis, self.sprites_obstaculos], 4)
+                if col == 9:
+                    bloco((x,y), [self.sprites_visiveis, self.sprites_obstaculos], 9)
+                if col == 1:
+                    bloco((x,y), [self.sprites_visiveis, self.sprites_obstaculos], 1)
+                if col == 0:
+                    bloco((x,y), [self.sprites_visiveis, self.sprites_obstaculos], 0)
+    
     def rodar(self):
         while not self.encerrada:
             self.tela.fill((102, 255, 51))
+            self.sprites_visiveis.draw(self.display_surface)
             self.tratamentoEventos()
             self.ataques()
             self.movimento()
             self.carregarPersonagem()
-            
+
             pg.display.flip()
             
     def tratamentoEventos(self):

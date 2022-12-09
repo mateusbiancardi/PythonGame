@@ -11,7 +11,7 @@ class Personagem:
         #guerreiro
         if self.personagem == 1:
             
-            VELOCIDADE = 0.4
+            VELOCIDADE = 0.8
             VIDA = 40
             VELOCIDADE_ATQ = 2
             DANO = 5
@@ -20,7 +20,7 @@ class Personagem:
         #mago  
         elif self.personagem == 2:
             
-            VELOCIDADE = 0.5
+            VELOCIDADE = 1.0
             VIDA = 20
             VELOCIDADE_ATQ = 2
             DANO = 4
@@ -29,7 +29,7 @@ class Personagem:
         #xamã  
         elif self.personagem == 3:
             
-            VELOCIDADE = 0.5
+            VELOCIDADE = 1.0
             VIDA = 30
             VELOCIDADE_ATQ = 4
             DANO = 5
@@ -38,7 +38,7 @@ class Personagem:
         #arqueiro  
         elif self.personagem == 4:
             
-            VELOCIDADE = 0.5
+            VELOCIDADE = 1.0
             VIDA = 30
             VELOCIDADE_ATQ = 1
             DANO = 3
