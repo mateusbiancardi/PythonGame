@@ -283,7 +283,7 @@ class telaPrincipal():
             self.v_xP2 = 0
         if ((self.yP2 + self.v_yP2 < 0) or (self.yP2 + self.v_yP2 > ConfigJogo.ALTURA_TELA-50)):
             self.v_yP2 = 0
-
+        #Parede de pedra
         if (((self.xP1 + self.v_xP1 > 96) and (self.xP1 + self.v_xP1 < 192)) or\
         ((self.xP1 + self.v_xP1 > 928) and (self.xP1 + self.v_xP1 < 1024))) and\
         (((self.yP1 + self.v_yP1 > 96) and (self.yP1 + self.v_yP1 < 192)) or\
