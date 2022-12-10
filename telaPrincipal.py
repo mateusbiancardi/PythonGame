@@ -283,6 +283,7 @@ class telaPrincipal():
             self.v_xP2 = 0
         if ((self.yP2 + self.v_yP2 < 0) or (self.yP2 + self.v_yP2 > ConfigJogo.ALTURA_TELA-50)):
             self.v_yP2 = 0
+        
         #Parede de pedra
         if (((self.xP1 + self.v_xP1 > 96) and (self.xP1 + self.v_xP1 < 192)) or\
         ((self.xP1 + self.v_xP1 > 928) and (self.xP1 + self.v_xP1 < 1024))) and\
@@ -291,6 +292,14 @@ class telaPrincipal():
             self.v_xP1 = 0 
             self.v_yP1 = 0
         
+        if (((self.xP2 + self.v_xP2 > 96) and (self.xP2 + self.v_xP2 < 192)) or\
+        ((self.xP2 + self.v_xP2 > 928) and (self.xP2 + self.v_xP2 < 1024))) and\
+        (((self.yP2 + self.v_yP2 > 96) and (self.yP2 + self.v_yP2 < 192)) or\
+        ((self.yP2 + self.v_yP2 > 416) and (self.yP2 + self.v_yP2 < 512))):
+            self.v_xP2 = 0 
+            self.v_yP2 = 0
+        
+
         self.xP1FlechaEsquerda += -self.v_Flecha
         self.xP1FlechaDireita += self.v_Flecha
         self.yP1FlechaCima += -self.v_Flecha
@@ -345,10 +354,10 @@ class telaPrincipal():
         self.lacaio = pg.image.load(os.path.join('sprites', 'minion.png'))
         font_vida = pg.font.SysFont(None, ConfigJogo.FONTE_VIDA)
         self.textoVida1 = font_vida.render(
-            f'{self.p1Vida}/{self.p1VidaTotal}', True, ConfigJogo.COR_VIDA)
+            f'{int(self.p1Vida)}/{self.p1VidaTotal}', True, ConfigJogo.COR_VIDA)
         
         self.textoVida2 = font_vida.render(
-            f'{self.p2Vida}/{self.p2VidaTotal}', True, ConfigJogo.COR_VIDA)
+            f'{int(self.p2Vida)}/{self.p2VidaTotal}', True, ConfigJogo.COR_VIDA)
         
         self.tela.blit(self.textoVida1, (self.xP1, self.yP1-20))
         self.tela.blit(self.textoVida2, (self.xP2, self.yP2-20))
@@ -622,4 +631,43 @@ class telaPrincipal():
                                     self.p1Vida = self.p1Vida-self.p2Dano
 
             else:
-                self.p1VidaAntes = self.p1Vida 
+                self.p1VidaAntes = self.p1Vida
+            
+        #Dano da lava
+        if (((self.xP1 + self.v_xP1 > 542) and\
+        (self.xP1 + self.v_xP1 < 608)) and\
+        ((self.yP1 + self.v_yP1 > 96) and (self.yP1 + self.v_yP1 < 128))):
+            self.p1Vida -= 0.05
+
+        if ((self.xP2 + self.v_xP2 > 542)\
+        and (self.xP2 + self.v_xP2 < 608)) and\
+        ((self.yP2 + self.v_yP2 > 96) and (self.yP2 + self.v_yP2 < 128)):
+            self.p2Vida -= 0.05
+        
+        if (((self.xP1 + self.v_xP1 > 64) and\
+        (self.xP1 + self.v_xP1 < 128)) or\
+        ((self.xP1 + self.v_xP1 > 1056) and\
+        (self.xP1 + self.v_xP1 < 1120))) and\
+        (((self.yP1 + self.v_yP1 > 576) and (self.yP1 + self.v_yP1 < 608))):
+            self.p1Vida -= 0.05
+
+        if (((self.xP2 + self.v_xP2 > 64) and\
+        (self.xP2 + self.v_xP2 < 128)) or\
+        ((self.xP2 + self.v_xP2 > 1056) and\
+        (self.xP2 + self.v_xP2 < 1120))) and\
+        (((self.yP2 + self.v_yP2 > 576) and (self.yP1 + self.v_yP1 < 608))):
+            self.p2Vida -= 0.05
+
+        if (((self.xP1 + self.v_xP1 > 128) and\
+        (self.xP1 + self.v_xP1 < 192)) or\
+        ((self.xP1 + self.v_xP1 > 960) and\
+        (self.xP1 + self.v_xP1 < 1024))) and\
+        (((self.yP1 + self.v_yP1 > 320) and (self.yP1 + self.v_yP1 < 352))):
+            self.p1Vida -= 0.05
+
+        if (((self.xP2 + self.v_xP2 > 128) and\
+        (self.xP2 + self.v_xP2 < 192)) or\
+        ((self.xP2 + self.v_xP2 > 960) and\
+        (self.xP2 + self.v_xP2 < 1024))) and\
+        (((self.yP2 + self.v_yP2 > 320) and (self.yP2 + self.v_yP2 < 352))):
+            self.p2Vida -= 0.05
