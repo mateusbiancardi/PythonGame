@@ -43,3 +43,4 @@ class Personagem:
             VELOCIDADE_ATQ = 1
             DANO = 3
             self.status = (VELOCIDADE, VIDA, 4, VELOCIDADE_ATQ, DANO)
+    

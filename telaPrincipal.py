@@ -113,7 +113,6 @@ class telaPrincipal():
             for col_index, col in enumerate(row):
                 x = col_index * 32
                 y = row_index * 32
-                
 
                 if col == 8:
                     bloco((x,y), [self.sprites_visiveis, self.sprites_obstaculos], 8)
@@ -127,7 +126,7 @@ class telaPrincipal():
                     bloco((x,y), [self.sprites_visiveis, self.sprites_obstaculos], 1)
                 if col == 0:
                     bloco((x,y), [self.sprites_visiveis, self.sprites_obstaculos], 0)
-    
+          
     def rodar(self):
         while not self.encerrada:
             self.tela.fill((102, 255, 51))
@@ -284,7 +283,14 @@ class telaPrincipal():
             self.v_xP2 = 0
         if ((self.yP2 + self.v_yP2 < 0) or (self.yP2 + self.v_yP2 > ConfigJogo.ALTURA_TELA-50)):
             self.v_yP2 = 0
-            
+
+        if (((self.xP1 + self.v_xP1 > 96) and (self.xP1 + self.v_xP1 < 192)) or\
+        ((self.xP1 + self.v_xP1 > 928) and (self.xP1 + self.v_xP1 < 1024))) and\
+        (((self.yP1 + self.v_yP1 > 96) and (self.yP1 + self.v_yP1 < 192)) or\
+        ((self.yP1 + self.v_yP1 > 416) and (self.yP1 + self.v_yP1 < 512))):
+            self.v_xP1 = 0 
+            self.v_yP1 = 0
+        
         self.xP1FlechaEsquerda += -self.v_Flecha
         self.xP1FlechaDireita += self.v_Flecha
         self.yP1FlechaCima += -self.v_Flecha
@@ -300,7 +306,7 @@ class telaPrincipal():
             
         self.xP2 += self.v_xP2
         self.yP2 += self.v_yP2
-        
+    
     def carregarPersonagem(self):
         if self.p1 == 1:
             self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'guerreiro.png'))
