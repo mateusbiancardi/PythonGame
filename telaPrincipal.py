@@ -23,6 +23,8 @@ class telaPrincipal():
         self.posicaoAdquirida = False
         self.mouse_pos = ()
         
+        self.tempoInicio = time()
+        
         p1 = Personagem(escolhidos[0], self.tela)
         p2 = Personagem(escolhidos[1], self.tela)
         
@@ -114,8 +116,24 @@ class telaPrincipal():
         self.xDireitaP2 = False
 
     def endGame(self):
+        self.tempo()
+        if self.tempoJogo == 0:
+            self.encerrada = True
+            
         if self.p1Vida <= 0 or self.p2Vida <= 0:
             self.encerrada = True
+            
+    def tempo(self):
+        self.tempoAtual = time()
+        self.tempoPassado = self.tempoAtual - self.tempoInicio
+        self.tempoJogo = int(ConfigJogo.DURACAO_PARTIDA - self.tempoPassado)
+        
+        font_tempo = pg.font.SysFont(None, ConfigJogo.FONTE_TEMPO)
+        self.textoTempo = font_tempo.render(
+            f'{self.tempoJogo}', True, ConfigJogo.COR_TEMPO)
+        
+        self.tela.blit(self.textoTempo, ((ConfigJogo.LARGURA_TELA // 2) - 30, ConfigJogo.ALTURA_TELA*0.05))
+        
 
     def criar_mapa(self):
         for row_index, row in enumerate(ConfigJogo.MAPA_JOGO):
@@ -284,7 +302,6 @@ class telaPrincipal():
                 
                 self.mouse_pos = pg.mouse.get_pos()
                 self.clique = True
-                self.P1primeiroCastFlecha = True
            
                 
         # evento de saida

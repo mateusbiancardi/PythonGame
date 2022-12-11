@@ -7,16 +7,27 @@ class telaFinal:
     def __init__(self, tela_f, p1Vida, p2Vida):
         self.tela_f = tela_f
         self.encerrado = False
+        font_vitoria = pg.font.SysFont(None, ConfigJogo.FONTE_TITULO)
 
         if p2Vida <= 0:
-            font_vitoria = pg.font.SysFont(None, ConfigJogo.FONTE_TITULO)
             self.vitoria = font_vitoria.render(
                 f'Vitória do Jogador 1!', True, ConfigJogo.COR_TITULO)
             
         elif p1Vida <= 0:
-            font_vitoria = pg.font.SysFont(None, ConfigJogo.FONTE_TITULO)
             self.vitoria = font_vitoria.render(
                 f'Vitória do Jogador 2!', True, ConfigJogo.COR_TITULO)
+            
+        elif p1Vida > p2Vida:
+            self.vitoria = font_vitoria.render(
+                f'Vitória do Jogador 1!', True, ConfigJogo.COR_TITULO)
+            
+        elif p1Vida < p2Vida:
+            self.vitoria = font_vitoria.render(
+                f'Vitória do Jogador 2!', True, ConfigJogo.COR_TITULO)
+            
+        elif p1Vida == p2Vida:
+            self.vitoria = font_vitoria.render(
+                f'Empate!', True, ConfigJogo.COR_TITULO)
     
     def rodar_final(self):
         while not self.encerrado:
