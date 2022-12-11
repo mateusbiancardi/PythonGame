@@ -299,7 +299,46 @@ class telaPrincipal():
             self.v_xP2 = 0 
             self.v_yP2 = 0
         
+        #Parede de madeira
+            #laterais
+        if(((self.xP1 + self.v_xP1 > 96) and (self.xP1 + self.v_xP1 < 192)) or\
+        ((self.xP1 + self.v_xP1 > 928) and (self.xP1 + self.v_xP1 < 1024))) and\
+        (((self.yP1 + self.v_yP1 > 64) and (self.yP1 + self.v_yP1 < 96)) or\
+        ((self.yP1 + self.v_yP1 > 192) and (self.yP1 + self.v_yP1 < 224)) or\
+        ((self.yP1 + self.v_yP1 > 384) and (self.yP1 + self.v_yP1 < 416)) or\
+        ((self.yP1 + self.v_yP1 > 512) and (self.yP1 + self.v_yP1 < 544))):
+            self.v_xP1 = 0 
+            self.v_yP1 = 0
+        
+        if(((self.xP2 + self.v_xP2 > 96) and (self.xP2 + self.v_xP2 < 192)) or\
+        ((self.xP2 + self.v_xP2 > 928) and (self.xP2 + self.v_xP2 < 1024))) and\
+        (((self.yP2 + self.v_yP2 > 64) and (self.yP2 + self.v_yP2 < 96)) or\
+        ((self.yP2 + self.v_yP2 > 192) and (self.yP2 + self.v_yP2 < 224)) or\
+        ((self.yP2 + self.v_yP2 > 384) and (self.yP2 + self.v_yP2 < 416)) or\
+        ((self.yP2 + self.v_yP2 > 512) and (self.yP2 + self.v_yP2 < 544))):
+            self.v_xP2 = 0 
+            self.v_yP2 = 0                 
+            
+            #cima e baixo
+        if(((self.xP1 + self.v_xP1 > 64) and (self.xP1 + self.v_xP1 < 96)) or\
+        ((self.xP1 + self.v_xP1 > 192) and (self.xP1 + self.v_xP1 < 224)) or\
+        ((self.xP1 + self.v_xP1 > 896) and (self.xP1 + self.v_xP1 < 928)) or\
+        ((self.xP1 + self.v_xP1 > 1024) and (self.xP1 + self.v_xP1 < 1056))) and\
+        (((self.yP1 + self.v_yP1 > 96) and (self.yP1 + self.v_yP1 < 192)) or\
+        ((self.yP1 + self.v_yP1 > 416) and (self.yP1 + self.v_yP1 < 512))):
+            self.v_xP1 = 0 
+            self.v_yP1 = 0 
 
+        if(((self.xP2 + self.v_xP2 > 64) and (self.xP2 + self.v_xP2 < 96)) or\
+        ((self.xP2 + self.v_xP2 > 192) and (self.xP2 + self.v_xP2 < 224)) or\
+        ((self.xP2 + self.v_xP2 > 896) and (self.xP2 + self.v_xP2 < 928)) or\
+        ((self.xP2 + self.v_xP2 > 1024) and (self.xP2 + self.v_xP2 < 1056))) and\
+        (((self.yP2 + self.v_yP2 > 96) and (self.yP2 + self.v_yP2 < 192)) or\
+        ((self.yP2 + self.v_yP2 > 416) and (self.yP2 + self.v_yP2 < 512))):
+            self.v_xP2 = 0 
+            self.v_yP2 = 0 
+        
+        #flechas
         self.xP1FlechaEsquerda += -self.v_Flecha
         self.xP1FlechaDireita += self.v_Flecha
         self.yP1FlechaCima += -self.v_Flecha
