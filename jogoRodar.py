@@ -3,6 +3,7 @@ from telaInicial import Menu
 from configJogo import ConfigJogo
 from selecaoPersonagem import telaSelecao
 from telaPrincipal import telaPrincipal
+from telaFinal import telaFinal
 
 class JogoArena():
     def __init__(self):
@@ -17,8 +18,11 @@ class JogoArena():
         cena = Menu(self.tela)
         cena.rodar()
 
+        
         while True:
             selecao = telaSelecao(self.tela)
             personagens = selecao.rodar()
             telaPrincipalRodando = telaPrincipal(self.tela, personagens)
             telaPrincipalRodando.rodar()
+            telaFinalRodando = telaFinal(self.tela)
+            telaFinalRodando.rodar_final()
