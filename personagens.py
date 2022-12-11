@@ -5,7 +5,6 @@ class Personagem:
         self.personagem = escolhido
         self.tela = tela
     
-    #área para acertar o boneco
     def stats(self):
         
         #guerreiro

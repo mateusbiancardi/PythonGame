@@ -38,6 +38,7 @@ class telaSelecao:
         while not self.encerrada:
             self.tratamento_eventos()
             self.desenha()
+        ## Retorna os personagens selecionados
         if self.encerrada:
             return (self.personagem1, self.personagem2)
             
@@ -50,7 +51,7 @@ class telaSelecao:
             sys.exit(0)
         
         
-
+        # Fluxo de seleção de personagem
         for event in events:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_DOWN:
@@ -137,6 +138,7 @@ class telaSelecao:
         tela.blit(self.sprite4_tamanho, self.sprite4_posicao)
         tela.blit(self.textoPersonagem4, (self.sprite1_posicao[0]+60, self.sprite1_posicao[1]+300))
 
+        # Desenha um retangulo indicando que o foco está no personagem
         if self.persoSelecionado == 1:
 
             pg.draw.rect(
