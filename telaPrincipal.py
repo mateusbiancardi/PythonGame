@@ -14,7 +14,6 @@ class telaPrincipal():
     def __init__(self, tela, escolhidos):
         self.tela = tela
         self.encerrada = False
-        self.mirado = False
         self.primeiroCastE = True
         self.primeiroCastQ = True
         self.primeiroCastM = True
@@ -123,6 +122,7 @@ class telaPrincipal():
         if self.p1Vida <= 0 or self.p2Vida <= 0:
             self.encerrada = True
             
+    #Tempo que falta para acabar a partida
     def tempo(self):
         self.tempoAtual = time()
         self.tempoPassado = self.tempoAtual - self.tempoInicio
@@ -172,7 +172,8 @@ class telaPrincipal():
             
         for event in events:
             #Personagem 1 (W A S D)
-            #Movimentação
+            #Movimentação (xEsquerdaP1 e xDireitaP1 são usados para inverter os sprites dos personagens de acordo com a
+            # direção de movimento)
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_a)) or (pg.key.get_pressed()[pg.K_a]):
                 self.v_xP1 = -self.p1Velocidade
                 self.xEsquerdaP1 = True
@@ -189,6 +190,7 @@ class telaPrincipal():
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_s)) or (pg.key.get_pressed()[pg.K_s]):
                 self.v_yP1 = self.p1Velocidade
                 
+            #Se o botão de movimento é solto, zera a velocidade do personagem
             if ((event.type == pg.KEYUP) and (event.key == pg.K_a)) or \
                         ((event.type == pg.KEYUP) and (event.key == pg.K_d)):
                 self.v_xP1 = 0
@@ -398,6 +400,7 @@ class telaPrincipal():
             self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'guerreiro.png'))
         
         elif self.p1 == 1 and self.xDireitaP1:
+            #inverte o sprite
             self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'guerreiro.png'))
             self.sprite1_tamanho = pg.transform.flip(self.sprite1_tamanho, True, False)
             
@@ -479,6 +482,7 @@ class telaPrincipal():
         self.tela.blit(self.sprite2_tamanho, (self.xP2, self.yP2)) 
         
     def ataques(self):
+        # Posicão centralizada dos personagens
         self.xP1CirculoCentralizado = self.xP1+30
         self.yP1CirculoCentralizado = self.yP1+25
         
@@ -489,6 +493,7 @@ class telaPrincipal():
         #Guerreiro
         #Ataque Giratório (E)
         if self.p1 == 1 and self.p1AtaqueE:
+            #Duração da skill
             if time() - self.duracaoCastE < 0.1:
                 pg.draw.circle(self.tela, (0,0,0), (self.xP1CirculoCentralizado, self.yP1CirculoCentralizado), self.raioATQGiratorio, 5)
                 #Se o p2 está localizado na área de p1:
