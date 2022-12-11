@@ -338,7 +338,6 @@ class telaPrincipal():
             self.v_xP2 = 0 
             self.v_yP2 = 0
         
-        #Parede de madeira
             #laterais
         if(((self.xP1 + self.v_xP1 > 96) and (self.xP1 + self.v_xP1 < 192)) or\
         ((self.xP1 + self.v_xP1 > 928) and (self.xP1 + self.v_xP1 < 1024))) and\
@@ -376,7 +375,17 @@ class telaPrincipal():
         ((self.yP2 + self.v_yP2 > 416) and (self.yP2 + self.v_yP2 < 512))):
             self.v_xP2 = 0 
             self.v_yP2 = 0 
+        #Parede de madeira
+        if ((self.xP1 + self.v_xP1 > 502) and (self.xP1 + self.v_xP1 < 608))and\
+        ((self.yP1 + self.v_yP1 > 128) and (self.yP1 + self.v_yP1 < 224)):
+            self.v_xP1 = 0 
+            self.v_yP1 = 0
         
+        if ((self.xP2 + self.v_xP2 > 502) and (self.xP2 + self.v_xP2 < 608))and\
+        ((self.yP2 + self.v_yP2 > 128) and (self.yP2 + self.v_yP2 < 224)):
+            self.v_xP2 = 0 
+            self.v_yP2 = 0
+
         #flechas
         self.xP1FlechaEsquerda += -self.v_Flecha
         self.xP1FlechaDireita += self.v_Flecha
@@ -503,6 +512,11 @@ class telaPrincipal():
                             int(self.yP2+55) in range (int(self.yP1CirculoCentralizado-self.raioATQGiratorio), int(self.yP1CirculoCentralizado+self.raioATQGiratorio)))) and \
                                 self.p2Vida - self.p2VidaAntes == 0:
                                     self.p2Vida = self.p2Vida-self.p1Dano
+                pos_madeira=[(544,160),(544,192),(576,160),(576,192)]
+                for x in pos_madeira:
+                    if bloco(x, [self.sprites_visiveis, self.sprites_obstaculos], 5)\
+                        in range (int(self.xP1CirculoCentralizado-self.raioATQGiratorio), int(self.xP1CirculoCentralizado+self.raioATQGiratorio)):
+                            self.tela.blit(bloco(x, [self.sprites_visiveis, self.sprites_obstaculos], 8))
             else:
                 self.p2VidaAntes = self.p2Vida
         
@@ -636,7 +650,11 @@ class telaPrincipal():
                             int(self.yP1+55) in range (int(self.yP2CirculoCentralizado-self.raioATQGiratorio), int(self.yP2CirculoCentralizado+self.raioATQGiratorio)))) and \
                                 self.p1Vida - self.p1VidaAntes == 0:
                                     self.p1Vida = self.p1Vida-self.p2Dano
-        
+                pos_madeira=[(544,160),(544,192),(576,160),(576,192)]
+                for x in pos_madeira:
+                    if bloco(x, [self.sprites_visiveis, self.sprites_obstaculos], 5)\
+                        in range (int(self.xP1CirculoCentralizado-self.raioATQGiratorio), int(self.xP1CirculoCentralizado+self.raioATQGiratorio)):
+                            self.tela.blit(bloco(x, [self.sprites_visiveis, self.sprites_obstaculos], 8))
             else:
                 self.p1VidaAntes = self.p1Vida
         
