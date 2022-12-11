@@ -4,16 +4,16 @@ from telaPrincipal import telaPrincipal
 from configJogo import ConfigJogo
 
 class telaFinal:
-    def __init__(self, tela_f):
+    def __init__(self, tela_f, p1Vida, p2Vida):
         self.tela_f = tela_f
         self.encerrado = False
 
-        if telaPrincipal.p2Vida <= 0:
+        if p2Vida <= 0:
             font_vitoria = pg.font.SysFont(None, ConfigJogo.FONTE_TITULO)
             self.vitoria = font_vitoria.render(
                 f'Vitória do Jogador 1!', True, ConfigJogo.COR_TITULO)
             
-        elif telaPrincipal.p1Vida <= 0:
+        elif p1Vida <= 0:
             font_vitoria = pg.font.SysFont(None, ConfigJogo.FONTE_TITULO)
             self.vitoria = font_vitoria.render(
                 f'Vitória do Jogador 2!', True, ConfigJogo.COR_TITULO)

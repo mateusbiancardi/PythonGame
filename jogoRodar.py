@@ -23,6 +23,6 @@ class JogoArena():
             selecao = telaSelecao(self.tela)
             personagens = selecao.rodar()
             telaPrincipalRodando = telaPrincipal(self.tela, personagens)
-            telaPrincipalRodando.rodar()
-            telaFinalRodando = telaFinal(self.tela)
+            vidaPersonagens = telaPrincipalRodando.rodar()
+            telaFinalRodando = telaFinal(self.tela, vidaPersonagens[0], vidaPersonagens[1])
             telaFinalRodando.rodar_final()

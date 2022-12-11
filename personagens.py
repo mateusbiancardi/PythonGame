@@ -23,7 +23,7 @@ class Personagem:
             VELOCIDADE = 1.5
             VIDA = 20
             VELOCIDADE_ATQ = 2
-            DANO = 4
+            DANO = 5
             self.status = (VELOCIDADE, VIDA, 2, VELOCIDADE_ATQ, DANO)
           
         #xamã  
@@ -32,7 +32,7 @@ class Personagem:
             VELOCIDADE = 1.5
             VIDA = 30
             VELOCIDADE_ATQ = 4
-            DANO = 5
+            DANO = 4
             self.status = (VELOCIDADE, VIDA, 3, VELOCIDADE_ATQ, DANO)
           
         #arqueiro  

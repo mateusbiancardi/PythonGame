@@ -4,11 +4,13 @@ class ConfigJogo:
     COR_ESTADO = (0, 0, 255)
     COR_TITULO = (0, 0, 0)
     COR_VIDA = (255, 0, 0)
+    COR_PERSONAGEM = (0, 0, 0)
     ALTURA_PLACAR = 0.1 * ALTURA_TELA
     ALTURA_TEMPO = 0.15 * ALTURA_TELA
     DURACAO_PARTIDA = 60
     FONTE_TITULO = 72
     FONTE_SUBTITULO = 36
+    FONTE_PERSONAGEM = 24
     FONTE_VIDA = 25
     MAPA_JOGO = [
     [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5],

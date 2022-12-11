@@ -47,7 +47,7 @@ class telaPrincipal():
         self.p1VelocidadePadrao = p1.status[0]
         self.p2VelocidadePadrao = p2.status[0]
         
-        self.v_Flecha = 0.8
+        self.v_Flecha = 2.0
         
         self.xP1FlechaEsquerda = 0
         self.xP1FlechaDireita = 0
@@ -82,7 +82,7 @@ class telaPrincipal():
         self.v_xP1 = 0
         self.v_yP1 = 0
         
-        self.v_Lacaio = 0.6
+        self.v_Lacaio = 1.55
         self.xP1Lacaio = 0
         self.yP1Lacaio = 0
         self.xP2Lacaio = 0
@@ -107,6 +107,15 @@ class telaPrincipal():
 
         self.raioATQGiratorio = 50
         self.raioATQProjetil = 5
+        
+        self.xEsquerdaP1 = True
+        self.xDireitaP1 = False
+        self.xEsquerdaP2 = True
+        self.xDireitaP2 = False
+
+    def endGame(self):
+        if self.p1Vida <= 0 or self.p2Vida <= 0:
+            self.encerrada = True
 
     def criar_mapa(self):
         for row_index, row in enumerate(ConfigJogo.MAPA_JOGO):
@@ -135,8 +144,10 @@ class telaPrincipal():
             self.ataques()
             self.movimento()
             self.carregarPersonagem()
+            self.endGame()
 
             pg.display.flip()
+        return (self.p1Vida, self.p2Vida)
             
     def tratamentoEventos(self):
         events = pg.event.get()
@@ -146,9 +157,13 @@ class telaPrincipal():
             #Movimentação
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_a)) or (pg.key.get_pressed()[pg.K_a]):
                 self.v_xP1 = -self.p1Velocidade
+                self.xEsquerdaP1 = True
+                self.xDireitaP1 = False
 
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_d)) or (pg.key.get_pressed()[pg.K_d]):
                 self.v_xP1 = self.p1Velocidade
+                self.xEsquerdaP1 = False
+                self.xDireitaP1 = True
                 
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_w)) or (pg.key.get_pressed()[pg.K_w]):
                 self.v_yP1 = -self.p1Velocidade
@@ -206,9 +221,13 @@ class telaPrincipal():
             #Movimentação
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_LEFT)) or (pg.key.get_pressed()[pg.K_LEFT]):
                 self.v_xP2 = -self.p2Velocidade
+                self.xEsquerdaP2 = True
+                self.xDireitaP2 = False
 
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_RIGHT)) or (pg.key.get_pressed()[pg.K_RIGHT]):
                 self.v_xP2 = self.p2Velocidade
+                self.xEsquerdaP2 = False
+                self.xDireitaP2 = True
                 
             if ((event.type == pg.KEYDOWN) and (event.key == pg.K_UP)) or (pg.key.get_pressed()[pg.K_UP]):
                 self.v_yP2 = -self.p2Velocidade
@@ -274,6 +293,7 @@ class telaPrincipal():
     
     def movimento(self):
         
+        #Colisão com os limites do mapa
         if ((self.xP1 + self.v_xP1 < 0) or (self.xP1 + self.v_xP1 > ConfigJogo.LARGURA_TELA-50)):
             self.v_xP1 = 0
         if ((self.yP1 + self.v_yP1 < 0) or (self.yP1 + self.v_yP1 > ConfigJogo.ALTURA_TELA-50)):
@@ -349,6 +369,7 @@ class telaPrincipal():
         self.yP2FlechaCima += -self.v_Flecha
         self.yP2FlechaBaixo += self.v_Flecha
         
+        #Movimentação
         self.xP1 += self.v_xP1
         self.yP1 += self.v_yP1
             
@@ -356,31 +377,67 @@ class telaPrincipal():
         self.yP2 += self.v_yP2
     
     def carregarPersonagem(self):
-        if self.p1 == 1:
+        if self.p1 == 1 and self.xEsquerdaP1:
             self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'guerreiro.png'))
+        
+        elif self.p1 == 1 and self.xDireitaP1:
+            self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'guerreiro.png'))
+            self.sprite1_tamanho = pg.transform.flip(self.sprite1_tamanho, True, False)
             
-        elif self.p1 == 2:
+            
+        if self.p1 == 2 and self.xEsquerdaP1:
             self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'mago.png'))
             
-        elif self.p1 == 3:
+        elif self.p1 == 2 and self.xDireitaP1:
+            self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'mago.png'))
+            self.sprite1_tamanho = pg.transform.flip(self.sprite1_tamanho, True, False)
+           
+            
+        if self.p1 == 3 and self.xEsquerdaP1:
             self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'xama.png'))
             
-        elif self.p1 == 4:
+        elif self.p1 == 3 and self.xDireitaP1:
+            self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'xama.png'))
+            self.sprite1_tamanho = pg.transform.flip(self.sprite1_tamanho, True, False)
+            
+            
+        if self.p1 == 4 and self.xEsquerdaP1:
             self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'arqueiro.png'))
+        
+        elif self.p1 == 4 and self.xDireitaP1:
+            self.sprite1_tamanho = pg.image.load(os.path.join('sprites', 'arqueiro.png'))
+            self.sprite1_tamanho = pg.transform.flip(self.sprite1_tamanho, True, False)
             
             
             
-        if self.p2 == 1:
+            
+        if self.p2 == 1 and self.xEsquerdaP2:
             self.sprite2_tamanho = pg.image.load(os.path.join('sprites', 'guerreiro.png'))
+        
+        elif self.p2 == 1 and self.xDireitaP2:
+            self.sprite2_tamanho = pg.image.load(os.path.join('sprites', 'guerreiro.png'))
+            self.sprite2_tamanho = pg.transform.flip(self.sprite2_tamanho, True, False)
             
-        elif self.p2 == 2:
+        if self.p2 == 2 and self.xEsquerdaP2:
             self.sprite2_tamanho = pg.image.load(os.path.join('sprites', 'mago.png'))
+        
+        elif self.p2 == 2 and self.xDireitaP2:
+            self.sprite2_tamanho = pg.image.load(os.path.join('sprites', 'mago.png'))
+            self.sprite2_tamanho = pg.transform.flip(self.sprite2_tamanho, True, False)
             
-        elif self.p2 == 3:
+        if self.p2 == 3 and self.xEsquerdaP2:
             self.sprite2_tamanho = pg.image.load(os.path.join('sprites', 'xama.png'))
+        
+        elif self.p2 == 3 and self.xDireitaP2:
+            self.sprite2_tamanho = pg.image.load(os.path.join('sprites', 'xama.png'))
+            self.sprite2_tamanho = pg.transform.flip(self.sprite2_tamanho, True, False)
             
-        elif self.p2 == 4:
+        if self.p2 == 4 and self.xEsquerdaP2:
             self.sprite2_tamanho = pg.image.load(os.path.join('sprites', 'arqueiro.png'))
+        
+        elif self.p2 == 4 and self.xDireitaP2:
+            self.sprite2_tamanho = pg.image.load(os.path.join('sprites', 'arqueiro.png'))
+            self.sprite2_tamanho = pg.transform.flip(self.sprite2_tamanho, True, False)
             
         self.sprite3_minion = pg.image.load(os.path.join('sprites', 'minion.png'))
             
@@ -431,7 +488,7 @@ class telaPrincipal():
         if self.p1 == 1 and self.p1AtaqueQ:
             if time() - self.duracaoCastQ < 3:
                 self.tela.blit(self.berserker, (self.xP1+10, self.yP1-50))
-                self.p1Velocidade = 0.5
+                self.p1Velocidade = 1.55
                 self.p1Dano = 10
             else:
                 self.p1Velocidade = self.p1VelocidadePadrao
@@ -454,8 +511,9 @@ class telaPrincipal():
                         int (self.xP2+40) in range (int(self.mouse_pos[0]-self.raioATQGiratorio), int(self.mouse_pos[0]+self.raioATQGiratorio))) and \
                             (int(self.yP2) in range (int(self.mouse_pos[1]-self.raioATQGiratorio), int(self.mouse_pos[1]+self.raioATQGiratorio)) or \
                                 int(self.yP2+55) in range (int(self.mouse_pos[1]-self.raioATQGiratorio), int(self.mouse_pos[1]+self.raioATQGiratorio)))) and \
-                                    self.p2Vida - self.p2VidaAntes == 0:
+                                    (self.p2Vida - self.p2VidaAntes == 0 or time() - self.cooldownFireballP1 > 0.9):
                                         self.p2Vida = self.p2Vida-self.p1Dano
+                                        self.cooldownFireballP1 = time()
             else:
                 self.p2VidaAntes = self.p2Vida
                 
@@ -483,8 +541,9 @@ class telaPrincipal():
                     self.P1v_x *= self.v_Lacaio
                     self.P1v_y *= self.v_Lacaio
                 else:
-                    if self.p2VidaAntes == self.p2Vida:
+                    if self.p2VidaAntes == self.p2Vida or time() - self.cooldownATKMinionP1 > 1.2:
                         self.p2Vida = self.p2Vida-self.p1Dano
+                        self.cooldownATKMinionP1 = time()
                     self.P1v_x = 0
                     self.P1v_y = 0
 
@@ -563,7 +622,7 @@ class telaPrincipal():
         if self.p2 == 1 and self.p2AtaqueN:
             if time() - self.duracaoCastN < 3:
                 self.tela.blit(self.berserker, (self.xP2+10, self.yP2-50))
-                self.p2Velocidade = 0.5
+                self.p2Velocidade = 1.55
                 self.p2Dano = 10
             else:
                 self.p2Velocidade = self.p2VelocidadePadrao
@@ -585,14 +644,15 @@ class telaPrincipal():
                         int (self.xP1+40) in range (int(self.mouse_pos[0]-self.raioATQGiratorio), int(self.mouse_pos[0]+self.raioATQGiratorio))) and \
                             (int(self.yP1) in range (int(self.mouse_pos[1]-self.raioATQGiratorio), int(self.mouse_pos[1]+self.raioATQGiratorio)) or \
                                 int(self.yP1+55) in range (int(self.mouse_pos[1]-self.raioATQGiratorio), int(self.mouse_pos[1]+self.raioATQGiratorio)))) and \
-                                    self.p1Vida - self.p1VidaAntes == 0:
+                                    (self.p1Vida - self.p1VidaAntes == 0 or time() - self.cooldownFireballP2 > 0.9):
                                         self.p1Vida = self.p1Vida-self.p2Dano
+                                        self.cooldownFireballP2 = time()
             else:
                 self.p1VidaAntes = self.p1Vida
                 
         #Xamã  
         #Invocar Lacaio (M)
-        if self.p1 == 3 and self.p2AtaqueM:
+        if self.p2 == 3 and self.p2AtaqueM:
             if time() - self.duracaoCastM < 3:
                 self.tela.blit(self.lacaio, (self.xP2Lacaio, self.yP2Lacaio))
                 
@@ -614,8 +674,9 @@ class telaPrincipal():
                     self.P2v_x *= self.v_Lacaio
                     self.P2v_y *= self.v_Lacaio
                 else:
-                    if self.p1VidaAntes == self.p1Vida:
+                    if self.p1VidaAntes == self.p1Vida or time() - self.cooldownATKMinionP2 > 1.2:
                         self.p1Vida = self.p1Vida-self.p2Dano
+                        self.cooldownATKMinionP2 = time()
                     self.P2v_x = 0
                     self.P2v_y = 0
 

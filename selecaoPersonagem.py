@@ -24,9 +24,9 @@ class telaSelecao:
         self.imagerect = self.sprite1_tamanho.get_rect()
         
         self.sprite1_posicao = (self.posicaoX_retangulo+10, self.posicaoY_retangulo+10)
-        self.sprite2_posicao = (self.posicaoX_retangulo+10, self.posicaoY_retangulo+100)
-        self.sprite3_posicao = (self.posicaoX_retangulo+10, self.posicaoY_retangulo+190)
-        self.sprite4_posicao = (self.posicaoX_retangulo+10, self.posicaoY_retangulo+280)
+        self.sprite2_posicao = (self.posicaoX_retangulo+10, self.posicaoY_retangulo+110)
+        self.sprite3_posicao = (self.posicaoX_retangulo+10, self.posicaoY_retangulo+210)
+        self.sprite4_posicao = (self.posicaoX_retangulo+10, self.posicaoY_retangulo+310)
 
         self.persoSelecionado = 1
         self.persoConfirmado = False
@@ -91,7 +91,7 @@ class telaSelecao:
 
     def desenha_titulo(self, tela):
         font_titulo = pg.font.SysFont(None, ConfigJogo.FONTE_TITULO)
-        
+        self.font_personagem = pg.font.SysFont(None, ConfigJogo.FONTE_PERSONAGEM)
         font_historia = pg.font.SysFont(None, ConfigJogo.FONTE_SUBTITULO//2)
 
         self.historia = font_historia.render(
@@ -106,6 +106,16 @@ class telaSelecao:
         elif self.personagem2 == 0:
             self.titulo = font_titulo.render(
                 f'Selecione o segundo personagem', True, ConfigJogo.COR_TITULO)
+            
+        self.textoPersonagem1 = self.font_personagem.render(
+            f'Guerreiro: Combatente voraz capaz de destruir qualquer um.', True, ConfigJogo.COR_PERSONAGEM)
+        self.textoPersonagem2 = self.font_personagem.render(
+            f'Mago: Mestre das artes arcanas e do conhecimento.', True, ConfigJogo.COR_PERSONAGEM)
+        self.textoPersonagem3 = self.font_personagem.render(
+            f'Xamã: Invocador e em comunhão com a natureza selvagem.', True, ConfigJogo.COR_PERSONAGEM)
+        self.textoPersonagem4 = self.font_personagem.render(
+            f'Arqueiro: Habilidoso na arte de atirar.', True, ConfigJogo.COR_PERSONAGEM)
+        
 
             
         px = ConfigJogo.LARGURA_TELA // 2 - self.titulo.get_size()[0] // 2
@@ -115,17 +125,24 @@ class telaSelecao:
 
     def selecionar_personagem(self,tela):
         
+        tela.blit(self.textoPersonagem1, (self.sprite1_posicao[0]+60, self.sprite1_posicao[1]))
         tela.blit(self.sprite1_tamanho, self.sprite1_posicao)
+        
         tela.blit(self.sprite2_tamanho, self.sprite2_posicao)
+        tela.blit(self.textoPersonagem2, (self.sprite1_posicao[0]+60, self.sprite1_posicao[1]+100))
+        
         tela.blit(self.sprite3_tamanho, self.sprite3_posicao)
+        tela.blit(self.textoPersonagem3, (self.sprite1_posicao[0]+60, self.sprite1_posicao[1]+200))
+        
         tela.blit(self.sprite4_tamanho, self.sprite4_posicao)
+        tela.blit(self.textoPersonagem4, (self.sprite1_posicao[0]+60, self.sprite1_posicao[1]+300))
 
         if self.persoSelecionado == 1:
 
             pg.draw.rect(
                 self.tela, 
                 (0,0,0),
-                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo, self.largura_retangulo, 90),
+                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo, self.largura_retangulo, 100),
                 5
             )
 
@@ -134,7 +151,7 @@ class telaSelecao:
             pg.draw.rect(
                 self.tela, 
                 (0,0,0),
-                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo+90, self.largura_retangulo, 90),
+                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo+100, self.largura_retangulo, 100),
                 5
             )     
 
@@ -143,7 +160,7 @@ class telaSelecao:
             pg.draw.rect(
                 self.tela, 
                 (0,0,0),
-                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo+180, self.largura_retangulo, 90),
+                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo+200, self.largura_retangulo, 100),
                 5
             )
 
@@ -152,7 +169,7 @@ class telaSelecao:
             pg.draw.rect(
                 self.tela, 
                 (0,0,0),
-                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo+270, self.largura_retangulo, 90),
+                pg.Rect(self.posicaoX_retangulo, self.posicaoY_retangulo+300, self.largura_retangulo, 100),
                 5
             )
 
